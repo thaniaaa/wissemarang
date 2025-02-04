@@ -1,0 +1,21 @@
+[
+    {
+      "id": 1,
+      "name": "Lawang Sewu",
+      "category": "Budaya",
+      "location": {
+        "address": "Jl. Pemuda, Semarang",
+        "latitude": -7.005145,
+        "longitude": 110.438125
+      },
+      "description": "Bangunan bersejarah di Semarang yang menjadi ikon wisata.",
+      "image": "https://example.com/lawang-sewu.jpg",
+      "facilities": ["Parkir", "Toilet", "Mushola", "Tempat Makan"],
+      "ticket_price": {
+        "adult": 25000,
+        "child": 15000,
+        "currency": "IDR"
+      }
+    }
+  ]
+  
