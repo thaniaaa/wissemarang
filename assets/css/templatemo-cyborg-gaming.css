@@ -123,13 +123,13 @@ Global Styles
 */
 html,
 body {
-  background: #1f2122;
+  background: #fff;
   font-family: 'Poppins', sans-serif;
 }
 
 body .page-content {
   margin-top: 110px;
-  background-color: #27292a;
+  background-color: #fff;
   padding: 60px;
   border-radius: 23px;
 }
@@ -214,7 +214,7 @@ section {
 }
 
 .heading-section h4 {
-  color: #ec6090;
+  color: #334eac;
   font-size: 34px;
   text-decoration: none;
   margin-bottom: 30px;
@@ -796,7 +796,7 @@ Banner Style
 
 .main-banner h4 em {
   font-style: normal;
-  color: #ec6090;
+  color: #334eac;
 }
 
 /* 
@@ -808,12 +808,12 @@ Most Popular Style
 .most-popular {
   margin-top: 60px;
   padding: 30px;
-  background-color: #1f2122;
+  background-color: #bad6eb;
   border-radius: 23px;
 }
 
 .most-popular .item {
-  background-color: #27292a;
+  background-color: #fff;
   padding: 30px 15px;
   border-radius: 23px;
   margin-bottom: 30px;
@@ -877,61 +877,106 @@ Gaming Library Style
 .gaming-library {
   margin-top: 60px;
   padding: 30px;
-  background-color: #1f2122;
+  background-color: #bad6eb;
   border-radius: 23px;
 }
 
-.gaming-library .item {
-  border-bottom: 1px solid #27292a;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
+.gaming-library .item .thumb {
+  position: relative;
+  overflow: hidden;
 }
 
-.gaming-library .last-item {
-  margin-bottom: 30px;
+.gaming-library .item .thumb .hover-effect {
+  position: absolute;
+  bottom: -100px;
+  text-align: center;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: all .4s;
 }
 
-.profile-library .last-item {
-  border-bottom: none;
-  padding-bottom: 0px;
-  margin-bottom: 0px;
+.gaming-library .item .thumb:hover .hover-effect {
+  opacity: 1;
+  visibility: visible;
+  bottom: 15px;
 }
 
-.gaming-library .item ul li {
-  margin-top: 15px;
-}
-
-.gaming-library .item ul li img {
-  margin-top: -30px;
-}
-
-.gaming-library .item ul li {
+.gaming-library .item .thumb .hover-effect h6 {
+  background-color: rgba(31,33,34,0.95);
   display: inline-block;
-  width: 17%;
+  color: #ec6090;
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  border-radius: 25px;
 }
 
-.gaming-library .item ul li:first-child {
-  width: 110px;
+.gaming-library .item img {
+  border-radius: 23px;
 }
 
-.gaming-library .item ul li:last-child {
-  width: 15%;
-  text-align: right;
-}
-
-.gaming-library .item ul li h4 {
+.gaming-library .item h4 {
   font-size: 15px;
-  margin-bottom: 5px;
+  margin-top: 20px;
+  margin-bottom: 0px;
+  display: inline-block;
 }
 
-.gaming-library .item ul li span {
+.gaming-library .item span {
   color: #666;
+  display: block;
+  margin-top: 7px;
+  font-weight: 400;
+}
+
+.gaming-library .item ul {
+  float: right;
+  margin-top: 20px;
+}
+
+.gaming-library .item ul li {
+  text-align: right;
+  color: #fff;
   font-size: 14px;
 }
 
-.gaming-library .main-button {
-  text-align: center;
-  margin-bottom: -53px;
+.gaming-library .item ul li:first-child i {
+  color: yellow;
+}
+
+.gaming-library .item ul li:last-child i {
+  color: #ec6090;
+}
+
+.gaming-library .owl-nav {
+  position: absolute;
+  margin: 0 auto;
+  top: -70px;
+  right: 0;
+}
+
+.gaming-library .owl-nav .owl-prev {
+  margin-right: 2.5px;
+}
+
+.gaming-library .owl-nav .owl-next {
+  margin-left: 2.5px;
+}
+
+.gaming-library .owl-nav .owl-prev span,
+.gaming-library .owl-nav .owl-next span  {
+  font-size: 36px;
+  display: inline-block;
+  color: #666;
+  opacity: 1;
+  transition: all .3s;
+}
+
+.gaming-library .owl-nav .owl-prev span:hover,
+.gaming-library .owl-nav .owl-next span:hover {
+  opacity: 1;
+  color: #ec6090;
 }
 
 /* 
