@@ -123,13 +123,13 @@ Global Styles
 */
 html,
 body {
-  background: #1f2122;
+  background: #FFFF;
   font-family: 'Poppins', sans-serif;
 }
 
 body .page-content {
   margin-top: 110px;
-  background-color: #27292a;
+  background-color: #FFFF; /* #27292a; */
   padding: 60px;
   border-radius: 23px;
 }
@@ -142,12 +142,12 @@ p {
 }
 
 ::selection {
-  background: #e75e8d;
+  background: #334eac;
   color: #fff;
 }
 
 ::-moz-selection {
-  background: #e75e8d;
+  background: #334eac;
   color: #fff;
 }
 
@@ -159,7 +159,7 @@ p {
 .main-button a {
   font-size: 14px;
   color: #fff;
-  background-color: #e75e8d;
+  background-color: #334eac;
   padding: 12px 30px;
   display: inline-block;
   border-radius: 25px;
@@ -172,15 +172,15 @@ p {
 }
 
 .main-button a:hover {
-  background-color: #fff;
-  color: #e75e8d;
+  background-color: #ece2c9;
+  color: #334eac;
 }
 
 .main-border-button a {
   font-size: 14px;
-  color: #ec6090;
+  color: #334eac;
   background-color: transparent;
-  border: 1px solid #ec6090;
+  border: 1px solid #334eac;
   padding: 12px 30px;
   display: inline-block;
   border-radius: 25px;
@@ -195,7 +195,7 @@ p {
 .main-border-button a:hover {
   border-color: #fff;
   background-color: #fff;
-  color: #e75e8d;
+  color: #334eac;
 }
 
 .border-no-active a {
@@ -214,7 +214,7 @@ section {
 }
 
 .heading-section h4 {
-  color: #ec6090;
+  color: #334eac;
   font-size: 34px;
   text-decoration: none;
   margin-bottom: 30px;
@@ -299,7 +299,7 @@ Pre-loader Style
   height: 16px;
   top: 12px;
   left: 15px;
-  background: #e75e8d;
+  background: #334eac;
   border-radius: 50%;
   -webkit-transform: translateX(0);
   transform: translateX(0);
@@ -322,7 +322,7 @@ Pre-loader Style
   width: 16px;
   height: 16px;
   margin-left: 16px;
-  background: #e75e8d;
+  background: #334eac;
   border-radius: 50%;
 }
 
@@ -381,18 +381,18 @@ Header Style
 }
 
 .header-area .main-nav #search input {
-  background-color: #27292a;
+  background-color: #334eac;
   height: 46px;
   border-radius: 23px;
   border: none;
-  color: #666;
+  color: #ffff;
   font-size: 14px;
   padding: 0px 15px 0px 45px;
 }
 
 .header-area .main-nav #search i {
   position: absolute;
-  color: #666;
+  color: #FFFF;
   left: 20px;
   top: 16px;
   width: 18px;
@@ -401,7 +401,7 @@ Header Style
 }
 
 .header-area .main-nav .logo {
-  border-right: 1px solid #27292a;
+  border-right: 1px solid #666;
   flex-basis: 25%;
   margin-right: 5%;
   -webkit-transition: all 0.3s ease 0s;
@@ -461,7 +461,7 @@ Header Style
 }
 
 .header-area .main-nav .nav li:last-child a {
-  background-color: #27292a;
+  background-color: #334eac;
   padding: 8px 10px 8px 20px;
   border-radius: 23px;
 }
@@ -479,13 +479,13 @@ Header Style
 
 .header-area .main-nav .nav li:hover a,
 .header-area .main-nav .nav li a.active {
-  color: #e75e8d !important;
+  color: #334eac !important;
 }
 
 .header-area .main-nav .nav li:last-child:hover a,
 .header-area .main-nav .nav li:last-child a.active {
   color: #fff !important;
-  background-color: #e75e8d !important;
+  background-color: #334eac !important;
 }
 
 .background-header .main-nav .nav li:hover a,
@@ -523,7 +523,7 @@ Header Style
   -o-transition: all 0.4s;
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
-  background-color: #e75e8d;
+  background-color: #334eac;
   display: block;
   position: absolute;
   width: 30px;
@@ -534,7 +534,7 @@ Header Style
 .background-header .main-nav .menu-trigger span,
 .background-header .main-nav .menu-trigger span:before,
 .background-header .main-nav .menu-trigger span:after {
-  background-color: #e75e8d;
+  background-color: #334eac;
 }
 
 .header-area .main-nav .menu-trigger span:before,
@@ -543,7 +543,7 @@ Header Style
   -o-transition: all 0.4s;
   -webkit-transition: all 0.4s;
   transition: all 0.4s;
-  background-color: #e75e8d;
+  background-color: #334eac;
   display: block;
   position: absolute;
   width: 30px;
@@ -554,7 +554,7 @@ Header Style
 
 .background-header .main-nav .menu-trigger span:before,
 .background-header .main-nav .menu-trigger span:after {
-  background-color: #e75e8d;
+  background-color: #334eac;
 }
 
 .header-area .main-nav .menu-trigger span:before,
@@ -595,11 +595,11 @@ Header Style
   -ms-transform: translateY(6px) translateX(1px) rotate(45deg);
   -webkit-transform: translateY(6px) translateX(1px) rotate(45deg);
   transform: translateY(6px) translateX(1px) rotate(45deg);
-  background-color: #e75e8d;
+  background-color: #334eac;
 }
 
 .background-header .main-nav .menu-trigger.active span:before {
-  background-color: #e75e8d;
+  background-color: #334eac;
 }
 
 .header-area .main-nav .menu-trigger.active span:after {
@@ -607,11 +607,11 @@ Header Style
   -ms-transform: translateY(-6px) translateX(1px) rotate(-45deg);
   -webkit-transform: translateY(-6px) translateX(1px) rotate(-45deg);
   transform: translateY(-6px) translateX(1px) rotate(-45deg);
-  background-color: #e75e8d;
+  background-color: #334eac;
 }
 
 .background-header .main-nav .menu-trigger.active span:after {
-  background-color: #e75e8d;
+  background-color: #334eac;
 }
 
 .header-area.header-sticky {
@@ -662,7 +662,7 @@ Header Style
   }
   .header-area.header-sticky .nav li a:hover,
   .header-area.header-sticky .nav li a.active {
-    color: #e75e8d!important;
+    color: #334eac!important;
     opacity: 1;
   }
   .header-area.header-sticky .nav li.search-icon a {
@@ -724,13 +724,13 @@ Header Style
   }
   .header-area .main-nav .nav li a:hover {
     background: #fff !important;
-    color: #e75e8d!important;
+    color: #334eac!important;
   }
   .header-area .main-nav .nav li:last-child a img {
     display: none;
   }
   .header-area .main-nav .nav li:last-child a:hover {
-    color: #ec6090 !important;
+    color: #334eac !important;
     background-color: transparent !important;
   }
   .header-area .main-nav .nav li.has-sub ul.sub-menu {
@@ -796,7 +796,7 @@ Banner Style
 
 .main-banner h4 em {
   font-style: normal;
-  color: #ec6090;
+  color: #334eac;
 }
 
 /* 
@@ -808,12 +808,12 @@ Most Popular Style
 .most-popular {
   margin-top: 60px;
   padding: 30px;
-  background-color: #1f2122;
+  background-color:  #BAD6EB;/* #6AB0E3; */
   border-radius: 23px;
 }
 
 .most-popular .item {
-  background-color: #27292a;
+  background-color:#ffff; /*#27292a;*/
   padding: 30px 15px;
   border-radius: 23px;
   margin-bottom: 30px;
@@ -831,6 +831,7 @@ Most Popular Style
 }
 
 .most-popular .item h4 {
+  color: #334eac;
   font-size: 15px;
   margin-top: 20px;
   margin-bottom: 0px;
@@ -860,7 +861,7 @@ Most Popular Style
 }
 
 .most-popular .item ul li:last-child i {
-  color: #ec6090;
+  color: #334eac;
 }
 
 .most-popular .main-button {
@@ -964,7 +965,7 @@ Featured Games Style
 
 .featured-games {
   border-radius: 23px;
-  background-color: #1f2122;
+  background-color: #BAD6EB;
   padding: 30px;
 }
 
@@ -992,7 +993,7 @@ Featured Games Style
 .featured-games .item .thumb .hover-effect h6 {
   background-color: rgba(31,33,34,0.95);
   display: inline-block;
-  color: #ec6090;
+  color: #334eac;
   font-weight: 600;
   font-size: 14px;
   padding: 10px 20px;
@@ -1004,6 +1005,7 @@ Featured Games Style
 }
 
 .featured-games .item h4 {
+  color : #334eac;
   font-size: 15px;
   margin-top: 20px;
   margin-bottom: 0px;
@@ -1024,7 +1026,7 @@ Featured Games Style
 
 .featured-games .item ul li {
   text-align: right;
-  color: #fff;
+  color: #FFFF;
   font-size: 14px;
 }
 
@@ -1148,7 +1150,7 @@ Start Stream Style
 
 .start-stream .item {
   padding: 30px;
-  border: 1px solid #444;
+  border: 1px solid #BAD6EB;
   border-radius: 23px;
 }
 
@@ -1173,7 +1175,7 @@ Live Stream Style
 .live-stream {
   margin-top: 60px;
   border-radius: 23px;
-  background-color: #1f2122;
+  background-color: #BAD6EB;
   padding: 30px;
 }
 
@@ -1239,7 +1241,7 @@ Live Stream Style
 
 .live-stream span i {
   color: #fff;
-  background-color: #ec6090;
+  background-color: #666;
   border-radius: 50%;
   font-size: 12px;
   width: 20px;
@@ -1251,15 +1253,16 @@ Live Stream Style
 }
 
 .live-stream span {
-  font-size: 14px;
-  color: #ec6090;
+  font-size: 10px;
+  color: #334eac;
 }
 
 .live-stream .down-content h4 {
+  color : #666;
   margin-top: 8px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
-  margin-left: 61px;
+  margin-left: 30px;
 }
 
 .live-stream .main-button {
@@ -1458,7 +1461,7 @@ Top Streamers Style
 
 .top-streamers {
   border-radius: 23px;
-  background-color: #1f2122;
+  background-color: #BAD6EB;
   padding: 30px;
   max-height: 567px;
   min-height: 567px;
@@ -1467,7 +1470,7 @@ Top Streamers Style
 .top-streamers ul li {
   display: inline-block;
   width: 100%;
-  border-bottom: 1px solid #353637;
+  border-bottom: 1px solid #BAD6EB;
   margin-bottom: 25px;
   padding-bottom: 25px;
 }
