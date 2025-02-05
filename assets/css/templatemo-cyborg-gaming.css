@@ -123,21 +123,13 @@ Global Styles
 */
 html,
 body {
-<<<<<<< HEAD
-  background: #fff;
-=======
   background: #FFFF;
->>>>>>> 223f6467721faa5594cc7ad622f35d1c123372ff
   font-family: 'Poppins', sans-serif;
 }
 
 body .page-content {
   margin-top: 110px;
-<<<<<<< HEAD
-  background-color: #fff;
-=======
   background-color: #FFFF; /* #27292a; */
->>>>>>> 223f6467721faa5594cc7ad622f35d1c123372ff
   padding: 60px;
   border-radius: 23px;
 }
@@ -807,6 +799,59 @@ Banner Style
   color: #334eac;
 }
 
+.main-banner2 {
+  background-image: url(../images/banner-bg2.jpg);
+  background-position: center center;
+  background-size: cover;
+  min-height: 380px;
+  border-radius: 23px;
+  padding: 80px 60px;
+}
+
+.main-banner2 h6 {
+  font-size: 20px;
+  color: #fff;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+.main-banner2 h4 {
+  font-size: 45px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.main-banner2 h4 em {
+  font-style: normal;
+  color: #334eac;
+}
+
+.main-banner3 {
+  background-image: url(../images/banner-bg3.jpg);
+  background-position: center center;
+  background-size: cover;
+  min-height: 380px;
+  border-radius: 23px;
+  padding: 80px 60px;
+}
+
+.main-banner3 h6 {
+  font-size: 20px;
+  color: #fff;
+  font-weight: 400;
+  margin-bottom: 25px;
+}
+
+.main-banner3 h4 {
+  font-size: 45px;
+  text-transform: uppercase;
+  margin-bottom: 25px;
+}
+
+.main-banner3 h4 em {
+  font-style: normal;
+  color: #334eac;
+}
 /* 
 ---------------------------------------------
 Most Popular Style
@@ -816,20 +861,12 @@ Most Popular Style
 .most-popular {
   margin-top: 60px;
   padding: 30px;
-<<<<<<< HEAD
-  background-color: #bad6eb;
-=======
   background-color:  #BAD6EB;/* #6AB0E3; */
->>>>>>> 223f6467721faa5594cc7ad622f35d1c123372ff
   border-radius: 23px;
 }
 
 .most-popular .item {
-<<<<<<< HEAD
-  background-color: #fff;
-=======
   background-color:#ffff; /*#27292a;*/
->>>>>>> 223f6467721faa5594cc7ad622f35d1c123372ff
   padding: 30px 15px;
   border-radius: 23px;
   margin-bottom: 30px;
