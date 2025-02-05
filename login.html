@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Wissemar</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/style.css"> <!-- Custom CSS -->
+</head>
+<body class="bg-light">
+
+    <div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-4" style="width: 400px;">
+            <div class="text-center">
+                <img src="assets/images/logo.png" alt="Wissemar" width="150">
+                <h4 class="mt-3">Login</h4>
+                <p class="text-muted">Masuk untuk memberi review & like</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" placeholder="Masukkan email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="Masukkan password" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Login</button>
+            </form>
+
+            <div id="message" class="alert mt-3 d-none"></div>
+
+            <!-- Login dengan Google (Hanya Logo) -->
+                <div class="text-center mt-3">
+                    <button id="google-login" class="btn btn-light rounded-circle shadow-sm p-2">
+                        <img src="assets/images/google-logo.png" alt="Google Login" width="30">
+                    </button>
+                </div>
+
+
+            <!-- Link ke halaman register -->
+            <div class="text-center mt-3">
+                <p>Belum punya akun? <a href="register.html">Daftar di sini</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const messageDiv = document.getElementById("message");
+
+            try {
+                const response = await fetch("http://localhost:5000/api/public/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    messageDiv.className = "alert alert-success";
+                    messageDiv.textContent = "Login berhasil! Redirecting...";
+                    localStorage.setItem("token", data.token); // Simpan token di localStorage
+                    setTimeout(() => {
+                        window.location.href = "index.html"; // Redirect ke halaman utama
+                    }, 1500);
+                } else {
+                    messageDiv.className = "alert alert-danger";
+                    messageDiv.textContent = data.error || "Login gagal!";
+                }
+            } catch (error) {
+                messageDiv.className = "alert alert-danger";
+                messageDiv.textContent = "Terjadi kesalahan. Coba lagi!";
+            }
+
+            if (!email || !password) {
+                messageDiv.className = "alert alert-danger";
+                messageDiv.textContent = "Email dan password harus diisi!";
+                messageDiv.classList.remove("d-none");
+                return;
+            }
+
+
+            messageDiv.classList.remove("d-none");
+        });
+
+        // Login dengan Google
+        document.getElementById("google-login").addEventListener("click", function() {
+            window.location.href = "http://localhost:5000/api/auth/google";
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

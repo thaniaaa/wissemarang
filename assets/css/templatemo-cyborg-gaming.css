@@ -1057,6 +1057,25 @@ footer p a:hover {
 
 /* 
 ---------------------------------------------
+login/register Style
+--------------------------------------------- 
+*/
+
+/* Styling tombol Google */
+#google-login {
+  border: none;
+  background-color: white;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Efek hover untuk membesarkan ikon */
+#google-login:hover {
+  transform: scale(1.1);
+}
+
+
+/* 
+---------------------------------------------
 Featured Games Style
 --------------------------------------------- 
 */
@@ -1233,6 +1252,7 @@ Featured Games Style
   color: #ec6090;
   font-size: 15px;
 }
+
 
 /* 
 ---------------------------------------------
