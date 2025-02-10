@@ -41,14 +41,14 @@ const router = express.Router();
             return res.status(400).json({ error: "Semua kolom harus diisi!" });
         }
 
-        if (!["admin", "user"].includes(role)) {
-            return res.status(400).json({ error: "Hanya bisa membuat akun admin atau user!" });
+        if (!["admin", "superadmin", "user"].includes(role)) {
+            return res.status(400).json({ error: "Hanya bisa membuat akun admin, superadmin, atau user!" });
         }
 
         // Pastikan hanya Super Admin yang bisa membuat admin baru
-        if (req.user.role !== "superadmin" && role === "admin") {
-            return res.status(403).json({ error: "Hanya Super Admin yang bisa menambah Admin!" });
-        }
+        if (req.user.role !== "superadmin" && (role === "admin" || role === "superadmin")) {
+            return res.status(403).json({ error: "Hanya Superadmin yang bisa menambahkan Admin atau Superadmin!" });
+        }        
 
         // Cek apakah email sudah digunakan
         const checkUserQuery = 'SELECT * FROM users WHERE email = ?';

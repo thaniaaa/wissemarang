@@ -23,5 +23,7 @@ app.use('/api/public', publicRoutes);
 
 // Pastikan folder 'uploads' tersedia dan bisa diakses
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/wisataImage', express.static(path.join(__dirname, '../wisataImage')));
+
 
 module.exports = app;

@@ -58,13 +58,14 @@ router.post('/register', async (req, res) => {
             bcrypt.hash(password, 10, (err, hashedPassword) => {
                 if (err) return res.status(500).json({ error: 'Gagal mengenkripsi password' });
 
-                // Simpan user baru dengan role 'user'
-                const insertUserQuery = 'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, "user")';
+                // Simpan user baru dengan role 'publik'
+                const insertUserQuery = 'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, "publik")';
+
                 db.query(insertUserQuery, [username, email, hashedPassword], (err, results) => {
                     if (err) return res.status(500).json({ error: 'Gagal menyimpan user' });
 
                     // Jika sukses, buat token JWT
-                    const token = jwt.sign({ id: results.insertId, username, email, role: 'user' }, "SECRET_KEY", { expiresIn: "1h" });
+                    const token = jwt.sign({ id: user.id, username: user.username, email: user.email, role: user.role }, "SECRET_KEY", { expiresIn: "1h" });
                     res.status(201).json({ message: 'Registrasi berhasil!', token });
                 });
             });
@@ -106,7 +107,7 @@ router.post('/login', async (req, res) => {
 router.get('/profile', verifyToken, (req, res) => {
     const userId = req.user.id;
 
-    db.query("SELECT username, email, created_at, profile_picture FROM users WHERE id = ?", [userId], (err, results) => {
+    db.query("SELECT username, email, created_at, role, profile_picture FROM users WHERE id = ?", [userId], (err, results) => {
         if (err) return res.status(500).json({ error: "Database error!" });
         if (results.length === 0) return res.status(404).json({ error: "User tidak ditemukan!" });
 
@@ -121,6 +122,7 @@ router.get('/profile', verifyToken, (req, res) => {
             username: user.username,
             email: user.email,
             created_at: user.created_at,
+            role: user.role,
             profile_picture: profilePictureUrl
         });
     });

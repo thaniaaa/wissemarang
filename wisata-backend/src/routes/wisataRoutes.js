@@ -5,14 +5,35 @@ const verifyAdmin = require('../middlewares/authMiddleware');
 const router = express.Router();
 
 // 🟢 PUBLIK: Lihat semua wisata
-router.get('/', (req, res) => {  // ✅ Sebelumnya salah, harus '/'
-    const query = 'SELECT * FROM wisata';
+router.get('/', (req, res) => {
+    const query = 'SELECT id, nama_tempat, kategori, foto, deskripsi, alamat, rating FROM wisata';
     db.query(query, (err, results) => {
         if (err) return res.status(500).json({ error: 'Database error' });
+
+        console.log("Data yang dikirim ke frontend:", results); // Debugging
+        res.json(results);
+    });
+});
+
+
+// 🟢 API: Ambil daftar wisata berdasarkan kategori (misal: Hotel, Kota Lama)
+router.get('/kategori/:kategori', (req, res) => {
+    const { kategori } = req.params;
+    
+    const query = 'SELECT nama_tempat, deskripsi, foto, rating FROM wisata WHERE kategori = ?';
+
+    db.query(query, [kategori], (err, results) => {
+        if (err) {
+            console.error("Database error:", err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+        if (results.length === 0) return res.status(404).json({ message: 'Kategori wisata tidak ditemukan' });
 
         res.json(results);
     });
 });
+
+
 
 // 🟢 PUBLIK: Lihat wisata berdasarkan ID
 router.get('/:id', (req, res) => {  // ✅ Perbaiki endpoint
