@@ -20,6 +20,7 @@ app.use('/api/wisata', wisataRoutes);
 app.use('/api/reviews', reviewsRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/public', publicRoutes);
+app.use("/api/profile", publicRoutes);
 
 // Pastikan folder 'uploads' tersedia dan bisa diakses
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));

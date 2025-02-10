@@ -272,15 +272,15 @@ https://templatemo.com/tm-579-cyborg-gaming
                     day: "numeric",
                 })
                 : "-";
+                if (data.profile_picture && data.profile_picture.trim() !== "") {
+                    profileImg.src = data.profile_picture.startsWith("http")
+                        ? data.profile_picture  // Jika sudah dalam format URL absolut
+                        : `http://localhost:5000/uploads/${data.profile_picture}`; // Jika hanya nama file
+                } else {
+                    console.warn("Profil tidak memiliki gambar, menampilkan default.");
+                    profileImg.src = "assets/images/default-profile.png"; // Gunakan default jika tidak ada gambar
+                }
 
-            // 🔹 Perbaikan untuk menampilkan gambar profil dengan URL absolut
-            if (data.profile_picture) {
-                profileImg.src = data.profile_picture.startsWith("http")
-                    ? data.profile_picture  // Jika sudah dalam format URL absolut
-                    : `http://localhost:5000/uploads/${data.profile_picture}`; // Jika hanya nama file
-            } else {
-                profileImg.src = "assets/images/default-profile.png"; // Gunakan default jika tidak ada gambar
-            }
 
             descriptionEl.textContent = "Selamat datang kembali!";
             authButtons.style.display = "none";
@@ -331,7 +331,7 @@ https://templatemo.com/tm-579-cyborg-gaming
             if (profilePic) formData.append("profile_picture", profilePic);
 
             try {
-                const response = await fetch("http://localhost:5000/api/admin/profile", {
+                const response = await fetch("http://localhost:5000/api/public/profile", {
                     method: "PUT",
                     headers: { "Authorization": `Bearer ${token}` },
                     body: formData
