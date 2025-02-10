@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Kelola Wisata</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <style>
+        body {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            background: #343a40;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar a {
+            color: white;
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            background: #495057;
+            border-radius: 5px;
+        }
+
+        .content {
+            margin-left: 270px;
+            padding: 20px;
+            width: 100%;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h4>Admin Panel</h4>
+        <a href="kelolaWisata.html">Kelola Wisata</a>
+        <a href="kelolaUser.html">Kelola User</a>
+        <a href="../index.html">Kembali</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h2 class="text-center">Admin Panel - Kelola Data Wisata</h2>
+
+        <div id="wisata-section" class="table-container">
+            <h3>Kelola Wisata</h3>
+            <table id="wisataTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Tempat</th>
+                        <th>Kategori</th>
+                        <th>Foto</th>
+                        <th>Deskripsi</th>
+                        <th>Alamat</th>
+                        <th>Rating</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data dari API akan dimasukkan di sini -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Modal Edit -->
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="editModalLabel">Edit Data Wisata</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <form id="editForm">
+                  <div class="modal-body">
+                      <input type="hidden" id="edit-id">
+                      
+                      <div class="form-group">
+                          <label>Nama Tempat</label>
+                          <input type="text" id="edit-nama" class="form-control" required>
+                      </div>
+
+                      <div class="form-group">
+                          <label>Kategori</label>
+                          <select id="edit-kategori" class="form-control">
+                              <option>Hotel</option>
+                              <option>Kuliner</option>
+                              <option>Oleh-Oleh</option>
+                              <option>Objek Wisata</option>
+                              <option>Tempat Nongkrong</option>
+                              <option>Kota Lama</option>
+                              <option>Spa</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label>Deskripsi</label>
+                          <textarea id="edit-deskripsi" class="form-control"></textarea>
+                      </div>
+
+                      <div class="form-group">
+                          <label>Alamat</label>
+                          <input type="text" id="edit-alamat" class="form-control">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Rating</label>
+                          <input type="number" id="edit-rating" class="form-control" min="0" max="5" step="0.1">
+                      </div>
+
+                      <div class="form-group">
+                          <label>Foto</label>
+                          <img id="edit-foto-preview" src="" width="100" class="mb-2">
+                          <input type="file" id="edit-foto" class="form-control-file">
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                      <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+    </div>
+
+
+    <!-- Scripts -->
+     <!-- Bootstrap dan jQuery -->
+    <script src="kelolaWisata.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+</body>
+
+</html>

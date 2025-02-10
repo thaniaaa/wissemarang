@@ -370,6 +370,86 @@ https://templatemo.com/tm-579-cyborg-gaming
   <script src="assets/js/popup.js"></script>
   <script src="assets/js/custom.js"></script>
 
+  <script>
+document.addEventListener("DOMContentLoaded", function () {
+            fetch("http://localhost:5000/api/wisata/kategori/Oleh-Oleh")
+                .then(response => response.json())
+                .then(data => {
+                    if (!Array.isArray(data)) {
+                        console.error("Data tidak valid:", data);
+                        return;
+                    }
+
+                    // Sorting berdasarkan rating tertinggi
+                     data.sort((a, b) => b.rating - a.rating);
+
+                    // Tampilkan oleh-oleh populer di carousel
+                    const olehOlehCarousel = document.getElementById("oleh-oleh-carousel");
+                    olehOlehCarousel.innerHTML = "";
+                    
+                    data.slice(0, 5).forEach(wisata => { // Hanya ambil 5 oleh-oleh untuk carousel
+                        const item = document.createElement("div");
+                        item.classList.add("item");
+
+                        item.innerHTML = `
+                            <div class="thumb">
+                                <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
+                            </div>
+                            <h4>${wisata.nama_tempat}</h4>
+                            <p><strong>Rating:</strong> ${wisata.rating ? wisata.rating : 'Tidak ada rating'} ⭐</p>
+                        `;
+
+
+
+                        olehOlehCarousel.appendChild(item);
+                    });
+
+                    $("#oleh-oleh-carousel").owlCarousel({
+                        items: 3,
+                        loop: true,
+                        autoplay: true,
+                        autoplayTimeout: 3000,
+                        dots: false
+                    });
+
+
+                    // Tampilkan daftar oleh-oleh di Kota Semarang
+                    const olehOlehList = document.getElementById("oleh-oleh-list");
+                    olehOlehList.innerHTML = "";
+
+                    data.forEach(wisata => {
+                        const wisataItem = document.createElement("div");
+                        wisataItem.classList.add("col-lg-3", "col-sm-6", "mb-4");
+
+                        wisataItem.innerHTML = `
+                            <div class="item">
+                                <div class="thumb">
+                                    <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
+                                    <div class="hover-effect">
+                                        <div class="content">
+                                            <div class="live">
+                                                <a href="#">Simpan</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="down-content">
+                                    <h4>${wisata.nama_tempat}</h4>
+                                    <p>${wisata.deskripsi.substring(0, 100)}...</p>
+                                    <p><strong>Rating:</strong> ${wisata.rating} ⭐</p>
+                                </div>
+                            </div>
+                        `;
+
+                        olehOlehList.appendChild(wisataItem);
+                    });
+                })
+                .catch(error => console.error("Gagal mengambil data wisata:", error));
+        });
+
+</script>
+
+
 
   </body>
 
