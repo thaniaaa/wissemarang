@@ -922,12 +922,6 @@ Most Popular Style
   margin-bottom: -53px;
 }
 
-/* 
----------------------------------------------
-Gaming Library Style
---------------------------------------------- 
-*/
-
 .gaming-library {
   margin-top: 60px;
   padding: 30px;
@@ -971,6 +965,7 @@ Gaming Library Style
 }
 
 .gaming-library .item h4 {
+  color : #334eac;
   font-size: 15px;
   margin-top: 20px;
   margin-bottom: 0px;
@@ -1432,11 +1427,11 @@ Game Details Style
 .game-details .content {
   border-radius: 23px;
   padding: 30px;
-  background-color: #1f2122;
+  background-color: #BAD6EB;
 }
 
 .game-details .content .left-info {
-  background-color: #27292a;
+  background-color: #FFFF;
   border-radius: 23px;
   padding: 30px;
   margin-bottom: 30px;
@@ -1447,6 +1442,7 @@ Game Details Style
 }
 
 .game-details .content .left-info h4 {
+  color : #334eac;
   font-size: 15px;
   display: block;
 }
@@ -1463,7 +1459,7 @@ Game Details Style
 }
 
 .game-details .content .left-info ul li {
-  color: #fff;
+  color: #666;
   font-size: 14px;
   margin-bottom: 3px;
 }
@@ -1477,7 +1473,7 @@ Game Details Style
 }
 
 .game-details .content .right-info {
-  background-color: #27292a;
+  background-color: #FFFF;
   border-radius: 23px;
   padding: 30px;
   margin-bottom: 30px;
@@ -1488,7 +1484,7 @@ Game Details Style
   width: 23%;
   text-align: center;
   font-size: 14px;
-  color: #fff;
+  color: #666;
 }
 
 .game-details .content .right-info ul li i {
