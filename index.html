@@ -72,12 +72,12 @@ https://templatemo.com/tm-579-cyborg-gaming
                     <!-- ***** Search End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
-                        <li><a href="index.html" class="active">Home</a></li>
-                        <li><a href="browse.html">Kategori</a></li>
-                        <li><a href="details.html">Populer</a></li>
-                        <li><a href="streams.html">Favorite</a></li> 
-                        <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
-                    </ul>   
+                      <li><a href="index.html" class="active">Home</a></li>
+                      <li><a href="#kategori-wisata">Kategori</a></li>
+                      <li><a href="#tempat-populer">Populer</a></li>
+                      <li><a href="streams.html">Favorite</a></li> 
+                      <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
+                    </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
@@ -157,7 +157,7 @@ https://templatemo.com/tm-579-cyborg-gaming
 
 
           <!-- ***** Most Popular Start ***** -->
-          <div class="most-popular">
+          <div id="kategori-wisata" class="most-popular">
             <div class="row">
               <div class="col-lg-12">
                 <div class="heading-section">
@@ -268,7 +268,7 @@ https://templatemo.com/tm-579-cyborg-gaming
           <!-- ***** Most Popular End ***** -->
 
           <!-- ***** Gaming Library Start ***** -->
-          <div class="gaming-library">
+          <div id="tempat-populer" class="gaming-library">
             <div class="col-lg-12">
               <div class="heading-section">
                 <h4><em>Tempat Populer</em> Di Kota Semarang</h4>
@@ -373,6 +373,18 @@ https://templatemo.com/tm-579-cyborg-gaming
       },
     });
   </script>
+
+<script>
+  document.querySelectorAll('.nav a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+      e.preventDefault();
+      const targetId = this.getAttribute('href').substring(1);
+      document.getElementById(targetId).scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+  });
+</script>
   
 
 
