@@ -64,7 +64,7 @@
     <div class="sidebar">
         <h4>Admin Panel</h4>
         <a href="kelolaWisata.html">Kelola Wisata</a>
-        <a href="kelolaUser.html">Kelola User</a>
+        <a href="kelolaUsers.html">Kelola User</a>
         <a href="../index.html">Kembali</a>
     </div>
 
@@ -74,6 +74,10 @@
 
         <div id="wisata-section" class="table-container">
             <h3>Kelola Wisata</h3>
+
+            <!-- Tombol Tambah Data Wisata -->
+            <button class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addModal">Tambah Wisata</button>
+
             <table id="wisataTable" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -94,75 +98,121 @@
         </div>
     </div>
 
-    <!-- Modal Edit -->
-    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title" id="editModalLabel">Edit Data Wisata</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                  </button>
-              </div>
-              <form id="editForm">
-                  <div class="modal-body">
-                      <input type="hidden" id="edit-id">
-                      
-                      <div class="form-group">
-                          <label>Nama Tempat</label>
-                          <input type="text" id="edit-nama" class="form-control" required>
-                      </div>
-
-                      <div class="form-group">
-                          <label>Kategori</label>
-                          <select id="edit-kategori" class="form-control">
-                              <option>Hotel</option>
-                              <option>Kuliner</option>
-                              <option>Oleh-Oleh</option>
-                              <option>Objek Wisata</option>
-                              <option>Tempat Nongkrong</option>
-                              <option>Kota Lama</option>
-                              <option>Spa</option>
-                          </select>
-                      </div>
-
-                      <div class="form-group">
-                          <label>Deskripsi</label>
-                          <textarea id="edit-deskripsi" class="form-control"></textarea>
-                      </div>
-
-                      <div class="form-group">
-                          <label>Alamat</label>
-                          <input type="text" id="edit-alamat" class="form-control">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Rating</label>
-                          <input type="number" id="edit-rating" class="form-control" min="0" max="5" step="0.1">
-                      </div>
-
-                      <div class="form-group">
-                          <label>Foto</label>
-                          <img id="edit-foto-preview" src="" width="100" class="mb-2">
-                          <input type="file" id="edit-foto" class="form-control-file">
-                      </div>
-                  </div>
-                  <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                      <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
-                  </div>
-              </form>
-          </div>
-      </div>
+    <!-- Modal Edit Wisata -->
+<div class="modal" id="editWisataModal" tabindex="-1" aria-labelledby="editWisataModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editWisataModalLabel">Edit Data Wisata</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editWisataForm">
+                <div class="modal-body">
+                    <input type="hidden" id="edit-wisata-id">
+                    <div class="form-group">
+                        <label for="edit-nama">Nama Tempat</label>
+                        <input type="text" id="edit-nama" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-kategori">Kategori</label>
+                        <select id="edit-kategori" class="form-control" required>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Kuliner">Kuliner</option>
+                            <option value="Oleh-Oleh">Oleh-Oleh</option>
+                            <option value="Objek Wisata">Objek Wisata</option>
+                            <option value="Tempat Nongkrong">Tempat Nongkrong</option>
+                            <option value="Kota Lama">Kota Lama</option>
+                            <option value="Spa">Spa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-deskripsi">Deskripsi</label>
+                        <textarea id="edit-deskripsi" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-alamat">Alamat</label>
+                        <input type="text" id="edit-alamat" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-rating">Rating</label>
+                        <input type="text" id="edit-rating" class="form-control" min="0" max="5">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-foto">Foto</label>
+                        <input type="file" id="edit-foto" class="form-control">
+                        <!-- <img id="edit-foto-preview" src="" alt="Preview" width="80"> -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
+
+
+<!-- Modal Tambah Wisata -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Tambah Data Wisata</h5>
+                <!-- Tombol X untuk menutup modal -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="add-nama">Nama Tempat</label>
+                        <input type="text" id="add-nama" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-kategori">Kategori</label>
+                        <select id="add-kategori" class="form-control" required>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Kuliner">Kuliner</option>
+                            <option value="Oleh-Oleh">Oleh-Oleh</option>
+                            <option value="Objek Wisata">Objek Wisata</option>
+                            <option value="Tempat Nongkrong">Tempat Nongkrong</option>
+                            <option value="Kota Lama">Kota Lama</option>
+                            <option value="Spa">Spa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-deskripsi">Deskripsi</label>
+                        <textarea id="add-deskripsi" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-alamat">Alamat</label>
+                        <input type="text" id="add-alamat" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-rating">Rating</label>
+                        <input type="number" id="add-rating" class="form-control" min="0" max="5" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-foto">Foto</label>
+                        <input type="file" id="add-foto" class="form-control-file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Tombol Batal untuk menutup modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Tambah Wisata</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 
 
     <!-- Scripts -->
-     <!-- Bootstrap dan jQuery -->
     <script src="kelolaWisata.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
 </body>
 

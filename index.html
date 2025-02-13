@@ -274,57 +274,8 @@ https://templatemo.com/tm-579-cyborg-gaming
                 <h4><em>Tempat Populer</em> Di Kota Semarang</h4>
               </div>
               <div class="owl-features owl-carousel">
-                <div class="item">
-                  <div class="thumb">
-                    <a href="#">
-                      <img src="assets/images/featured-01.jpg" alt="">
-                    </a>
-                  </div>
-                  <h4>KONICIPI<br><span>alamat</span></h4>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <a href="#">
-                      <img src="assets/images/featured-02.jpg" alt="">
-                    </a>
-                  </div>
-                  <h4>Gamezer<br><span>alamat</span></h4>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <a href="#">
-                      <img src="assets/images/featured-03.jpg" alt="">
-                    </a>
-                  </div>
-                  <h4>Island Rusty<br><span>alamat</span></h4>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <a href="#">
-                      <img src="assets/images/featured-01.jpg" alt="">
-                    </a>
-                  </div>
-                  <h4>CS-GO<br><span>alasan</span></h4>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <a href="#">
-                      <img src="assets/images/featured-02.jpg" alt="">
-                    </a>
-                  </div>
-                  <h4>Gamezer<br><span>alasan</span></h4>
-                </div>
-                <div class="item">
-                  <div class="thumb">
-                    <a href="#">
-                      <img src="assets/images/featured-03.jpg" alt="">
-                    </a>
-                  </div>
-                  <h4>Island Rusty<br><span>alamat</span></h4>
-                </div>
+                <!-- data ditempatkan di sini -->
               </div>
-            
-              
           </div>
           <!-- ***** Gaming Library End ***** -->
         </div>
@@ -372,6 +323,45 @@ https://templatemo.com/tm-579-cyborg-gaming
         disableOnInteraction: false,
       },
     });
+
+    document.addEventListener("DOMContentLoaded", function() {
+    fetch('http://localhost:5000/api/wisata/top-wisata')
+        .then(response => response.json())
+        .then(data => {
+            const popularWisataContainer = document.getElementById('popular-wisata');
+            
+            // Menghapus semua elemen yang ada sebelumnya
+            popularWisataContainer.innerHTML = '';
+            
+            // Loop untuk menambahkan data wisata ke carousel
+            data.forEach(item => {
+                const wisataItem = `
+                    <div class="item">
+                        <div class="thumb">
+                            <a href="details.html?id=${item.id}">
+                                <img src="http://localhost:5000/${item.foto}" alt="${item.nama_tempat}">
+                            </a>
+                        </div>
+                        <h4>${item.nama_tempat}<br><span>${item.rating}⭐</span></h4>
+                    </div>
+                `;
+                popularWisataContainer.innerHTML += wisataItem;
+            });
+
+            // Menyegarkan owl-carousel setelah data dimuat
+            $('.owl-carousel').owlCarousel('destroy'); // Reset Owl Carousel
+            $('.owl-carousel').owlCarousel({ // Menginisialisasi ulang owl-carousel
+                items: 3,
+                loop: true,
+                margin: 10,
+                nav: true,
+                dots: true
+            });
+        })
+        .catch(error => console.error('Error fetching popular wisata:', error));
+});
+
+
   </script>
   
 

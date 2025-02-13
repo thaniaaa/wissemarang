@@ -1,8 +1,37 @@
 const express = require('express');
 const db = require('../models/db');
 const verifyAdmin = require('../middlewares/authMiddleware');
+const multer = require('multer');
+const path = require('path');
+const sharp = require('sharp');
+const fs = require('fs');
 
 const router = express.Router();
+
+// 🔹 Konfigurasi Multer untuk Upload File
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'wisataImage/'); // Pastikan folder 'wisataImage' ada
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + path.extname(file.originalname)); // Gunakan timestamp sebagai nama file
+    }
+});
+
+const fileFilter = (req, file, cb) => {
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (allowedTypes.includes(file.mimetype)) {
+        cb(null, true);
+    } else {
+        cb(new Error('File harus berupa gambar JPG atau PNG!'), false);
+    }
+};
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 10 * 1024 * 1024 }, // Maksimum 10MB
+    fileFilter: fileFilter
+});
 
 // 🟢 PUBLIK: Lihat semua wisata
 router.get('/', (req, res) => {
@@ -56,56 +85,144 @@ router.get('/:id', (req, res) => {  // ✅ Perbaiki endpoint
     });
 });
 
-// 🔴 ADMIN: Tambah Wisata
-const Joi = require('joi');
+// 🔹 API Tambah Wisata
+router.post('/', verifyAdmin, upload.single('foto'), async (req, res) => {
+    const { nama_tempat, kategori, deskripsi, alamat, rating } = req.body;
+    let fotoWisata = null;
 
-router.post('/', verifyAdmin, (req, res) => {
-    const schema = Joi.object({
-        nama: Joi.string().min(3).required(),
-        lokasi: Joi.string().required(),
-        deskripsi: Joi.string().required(),
-        foto: Joi.string().uri().required(),
-        kategori: Joi.string().valid('Hotel', 'Kuliner', 'Oleh-Oleh', 'Spa', 'Objek Wisata', 'Tempat Nongkrong', 'Kota Lama').required(),
-        rating: Joi.number().min(0).max(5).required()
-    });
+    if (req.file) {
+        console.log('File uploaded:', req.file);
+        console.log('MIME type:', req.file.mimetype);
+        console.log('File size:', req.file.size);
 
-    const { error } = schema.validate(req.body);
-    if (error) return res.status(400).json({ error: error.details[0].message });
+        // Tentukan path gambar yang diupload
+        fotoWisata = `wisataImage/${req.file.filename}`;
+    }
 
-    const { nama, lokasi, deskripsi, foto, kategori, rating } = req.body;
-    const query = 'INSERT INTO wisata (nama, lokasi, deskripsi, foto, kategori, rating) VALUES (?, ?, ?, ?, ?, ?)';
-    
-    db.query(query, [nama, lokasi, deskripsi, foto, kategori, rating], (err, results) => {
-        if (err) return res.status(500).json({ error: 'Database error' });
+    // Query untuk memasukkan data wisata baru ke database
+    const insertWisataQuery = 'INSERT INTO wisata (nama_tempat, kategori, deskripsi, foto, alamat, rating) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(insertWisataQuery, [nama_tempat, kategori, deskripsi, fotoWisata, alamat, rating], (err, result) => {
+        if (err) {
+            console.error('Error inserting wisata data:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
 
-        res.status(201).json({ message: 'Wisata berhasil ditambahkan!', id: results.insertId });
+        res.json({
+            message: 'Wisata berhasil ditambahkan!',
+            foto: fotoWisata ? `http://localhost:5000/wisataImage/${fotoWisata}` : null,
+        });
     });
 });
 
-// 🔴 ADMIN: Edit wisata
-router.put('/:id', verifyAdmin, (req, res) => {
+
+// 🔹 API Update Wisata Tanpa Kompresi Gambar
+router.put('/:id', verifyAdmin, upload.single('foto'), async (req, res) => {
     const { id } = req.params;
-    const { nama, lokasi, deskripsi, foto, kategori, rating } = req.body;
-    
-    const query = 'UPDATE wisata SET nama = ?, lokasi = ?, deskripsi = ?, foto = ?, kategori = ?, rating = ? WHERE id = ?';
+    const { nama_tempat, kategori, deskripsi, alamat, rating } = req.body;
+    let fotoWisata = null;
 
-    db.query(query, [nama, lokasi, deskripsi, foto, kategori, rating, id], (err) => {  // ✅ Pastikan semua parameter dikirim
-        if (err) return res.status(500).json({ error: 'Database error' });
+    if (req.file) {
+        console.log('File uploaded:', req.file);
+        console.log('MIME type:', req.file.mimetype);
+        console.log('File size:', req.file.size);
 
-        res.json({ message: 'Wisata berhasil diperbarui!' });
-    });
+        // Tentukan path gambar yang diupload tanpa kompresi
+        fotoWisata = `wisataImage/${req.file.filename}`;
+
+        // Menghapus gambar wisata lama jika ada
+        const getOldFotoQuery = 'SELECT foto FROM wisata WHERE id = ?';
+        db.query(getOldFotoQuery, [id], async (err, result) => {
+            if (err) {
+                console.error('Error fetching old foto:', err);
+                return res.status(500).json({ error: 'Database error' });
+            }
+
+            const oldFoto = result[0] ? result[0].foto : null;
+
+            // Hapus file lama jika ada
+            if (oldFoto) {
+                const oldFilePath = `wisataImage/${oldFoto}`;
+                try {
+                    if (fs.existsSync(oldFilePath)) {
+                        await fsPromises.unlink(oldFilePath);  // Hapus gambar lama
+                        console.log('Old foto deleted');
+                    }
+                } catch (error) {
+                    console.error('Error deleting old foto:', error);
+                }
+            }
+
+            // Update wisata dengan gambar yang sudah diupload
+            const updateWisataQuery = 'UPDATE wisata SET nama_tempat = ?, kategori = ?, deskripsi = ?, foto = ?, alamat = ?, rating = ? WHERE id = ?';
+            db.query(updateWisataQuery, [nama_tempat, kategori, deskripsi, fotoWisata, alamat, rating, id], (err, result) => {
+                if (err) {
+                    console.error('Error updating wisata:', err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+
+                res.json({
+                    message: 'Wisata berhasil diperbarui!',
+                    foto: `http://localhost:5000/wisataImage/${fotoWisata}`, // Kembalikan URL foto
+                });
+            });
+        });
+    } else {
+        // Jika tidak ada foto yang di-upload, update data wisata tanpa mengubah foto
+        const updateWisataQuery = 'UPDATE wisata SET nama_tempat = ?, kategori = ?, deskripsi = ?, alamat = ?, rating = ? WHERE id = ?';
+        db.query(updateWisataQuery, [nama_tempat, kategori, deskripsi, alamat, rating, id], (err, result) => {
+            if (err) {
+                console.error('Error updating wisata:', err);
+                return res.status(500).json({ error: 'Database error' });
+            }
+
+            res.json({ message: 'Wisata berhasil diperbarui tanpa perubahan foto!' });
+        });
+    }
 });
 
-// 🔴 ADMIN: Hapus wisata
+
+// 🔴 API Hapus Wisata
 router.delete('/:id', verifyAdmin, (req, res) => {
     const { id } = req.params;
-    const query = 'DELETE FROM wisata WHERE id = ?';
 
-    db.query(query, [id], (err) => {
-        if (err) return res.status(500).json({ error: 'Database error' });
+    // Query untuk menghapus data wisata berdasarkan ID
+    const deleteWisataQuery = 'DELETE FROM wisata WHERE id = ?';
+    
+    db.query(deleteWisataQuery, [id], (err, result) => {
+        if (err) {
+            console.error('Error deleting wisata data:', err);
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ message: 'Wisata tidak ditemukan!' });
+        }
 
         res.json({ message: 'Wisata berhasil dihapus!' });
     });
 });
+
+// Endpoint untuk mendapatkan 5 wisata dengan rating tertinggi
+router.get('/top-wisata', (req, res) => {
+    const query = `SELECT * FROM wisata ORDER BY rating DESC LIMIT 5`;
+
+    db.query(query, (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: err.message });
+        }
+        
+        // Jika hasilnya kosong, berikan respons "Wisata tidak ditemukan"
+        if (results.length === 0) {
+            return res.status(404).json({ message: "Wisata tidak ditemukan" });
+        }
+
+        res.json(results);
+    });
+});
+
+
+
+
+
 
 module.exports = router;
