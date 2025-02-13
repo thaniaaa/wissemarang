@@ -12,36 +12,42 @@
     <style>
         body {
             display: flex;
+            background: #FFFF;
+            flex-wrap: wrap;
         }
 
         .sidebar {
             width: 250px;
             height: 100vh;
-            background: #343a40;
+            background: #BAD6EB;
             color: white;
             padding: 20px;
             position: fixed;
             top: 0;
             left: 0;
             overflow-y: auto;
+            transition: all 0.3s ease-in-out;
         }
 
-        .sidebar a {
-            color: white;
-            display: block;
-            padding: 10px;
-            text-decoration: none;
+        .sidebar .btn {
+            width: 100%;
+            margin-bottom: 10px;
+            background: #334eac;
+            color: #FFF;
+            border: none;
+            font-weight: bold;
         }
 
-        .sidebar a:hover {
-            background: #495057;
-            border-radius: 5px;
+        .sidebar .btn:hover {
+            background: white;
+            color: #334eac;
         }
 
         .content {
-            margin-left: 270px;
+            margin-left: 250px;
             padding: 20px;
-            width: 100%;
+            width: calc(100% - 250px);
+            transition: all 0.3s ease-in-out;
         }
 
         .table-container {
@@ -50,22 +56,60 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
         }
 
-        .hidden {
-            display: none;
+        .btn-edit {
+            background: #334eac;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #334eac;
+            color: #FFF;
+        }
+
+        .btn-edit:hover, .btn-delete:hover {
+            opacity: 0.8;
+        }
+
+        table img {
+            width: 50px;
+            height: auto;
+            object-fit: cover;
+        }
+
+        /* Responsif untuk layar kecil */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 10px;
+            }
+
+            .content {
+                margin-left: 0;
+                width: 100%;
+            }
+
+            table {
+                font-size: 14px;
+            }
+
+            table img {
+                width: 40px;
+            }
         }
     </style>
 </head>
 
 <body>
-
-    <!-- Sidebar -->
     <div class="sidebar">
         <h4>Admin Panel</h4>
-        <a href="kelolaWisata.html">Kelola Wisata</a>
-        <a href="kelolaUser.html">Kelola User</a>
-        <a href="../index.html">Kembali</a>
+        <button class="btn" onclick="location.href='kelolaWisata.html'">Kelola Wisata</button>
+        <button class="btn" onclick="location.href='kelolaUser.html'">Kelola User</button>
+        <button class="btn" onclick="location.href='../index.html'">Kembali</button>
     </div>
 
     <!-- Main Content -->

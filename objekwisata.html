@@ -66,9 +66,9 @@ https://templatemo.com/tm-579-cyborg-gaming
                      <!-- ***** Menu Start ***** -->
                      <ul class="nav">
                         <li><a href="index.html" class="active">Home</a></li>
-                        <li><a href="browse.html">Kategori</a></li>
-                        <li><a href="details.html">Popular</a></li>
-                        <li><a href="streams.html">Favorite</a></li> 
+                        <li><a href="index.html#kategori-wisata">Kategori</a></li>
+                        <li><a href="index.html#tempat-populer">Popular</a></li>
+                        <li><a href="favorite.html">Favorite</a></li> 
                         <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
                     </ul>   
                     <a class='menu-trigger'>
@@ -255,14 +255,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <div class="hover-effect">
                                         <div class="content">
                                             <div class="live">
-                                                <a href="#">Simpan</a>
+                                                <a href="#"><i class="fas fa-bookmark"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="down-content">
                                     <h4>${wisata.nama_tempat}</h4>
-                                    <p>${wisata.deskripsi.substring(0, 100)}...</p>
+                                    
                                     <p><strong>Rating:</strong> ${wisata.rating} ⭐</p>
                                 </div>
                             </div>
