@@ -8,7 +8,7 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Cyborg - Awesome HTML5 Template</title>
+    <title>Wissemar - Hotel</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -20,13 +20,27 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
 
-TemplateMo 579 Cyborg Gaming
+    <style>
 
-https://templatemo.com/tm-579-cyborg-gaming
+      .favorite-icon {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          font-size: 24px;
+          color: red;
+          cursor: pointer;
+          transition: 0.3s;
+          background: #d2d2d2;
+          border-radius: 50%;
+          padding: 5px;
+      }
 
--->
+      .favorite-icon:hover {
+          color: darkred;
+      }
+  </style>
+   
   </head>
 
 <body>
@@ -68,7 +82,7 @@ https://templatemo.com/tm-579-cyborg-gaming
                         <li><a href="index.html" class="active">Home</a></li>
                         <li><a href="browse.html">Kategori</a></li>
                         <li><a href="details.html">Popular</a></li>
-                        <li><a href="streams.html">Favorite</a></li> 
+                        <li><a href="favorite.html">Favorite</a></li> 
                         <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
                     </ul>   
                     <a class='menu-trigger'>
@@ -105,49 +119,6 @@ https://templatemo.com/tm-579-cyborg-gaming
                 <div class="heading-section">
                   <h4><em>Kota</em> Semarang</h4>
                 </div>
-                <!----
-                <ul>
-                  <li>
-                    <span>01</span>
-                    <img src="assets/images/avatar-01.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> LahutaM</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>02</span>
-                    <img src="assets/images/avatar-02.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> Kengan</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>03</span>
-                    <img src="assets/images/avatar-03.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> Areluwa</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>04</span>
-                    <img src="assets/images/avatar-04.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> Omeg</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>05</span>
-                    <img src="assets/images/avatar-01.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> GangTeam</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                </ul> -->
               </div> 
             </div>
           </div>
@@ -201,6 +172,8 @@ https://templatemo.com/tm-579-cyborg-gaming
 
   <script>
 document.addEventListener("DOMContentLoaded", function () {
+  const token = localStorage.getItem('token');  // Ambil token dari localStorage
+
             fetch("http://localhost:5000/api/wisata/kategori/Hotel")
                 .then(response => response.json())
                 .then(data => {
@@ -255,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <div class="hover-effect">
                                         <div class="content">
                                             <div class="live">
-                                                <a href="#">Simpan</a>
+                                                <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this)"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -273,6 +246,58 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .catch(error => console.error("Gagal mengambil data wisata:", error));
         });
+
+        // Fungsi untuk toggle favorit
+function toggleFavorite(icon) {
+    const token = localStorage.getItem('token');  // Ambil token dari localStorage
+    if (!token) {
+        alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');
+        return;
+    }
+
+    const wisataId = icon.getAttribute('data-id');  // Ambil ID wisata
+    const userId = JSON.parse(atob(token.split('.')[1])).id;  // Mendekode JWT dan ambil userId
+
+    const isFavorited = icon.classList.contains("fa-solid"); // Cek apakah sudah ada di favorit
+
+    // Jika belum difavoritkan, tambahkan ke favorit
+    if (!isFavorited) {
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, wisataId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menambah, ubah ikon menjadi berwarna
+            icon.classList.add("fa-solid");
+            icon.classList.remove("fa-regular");
+        })
+        .catch(error => {
+            console.error("Error adding to favorite:", error);
+        });
+    } else {
+        // Jika sudah difavoritkan, hapus dari favorit
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menghapus, ubah ikon menjadi abu-abu
+            icon.classList.add("fa-regular");
+            icon.classList.remove("fa-solid");
+        })
+        .catch(error => {
+            console.error("Error removing from favorite:", error);
+        });
+    }
+}
 
 </script>
 
