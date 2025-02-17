@@ -79,6 +79,27 @@
             object-fit: cover;
         }
 
+        .custom-edit {
+    background-color: #334eac; /* Hijau */
+    color: white;
+    border: none;
+}
+
+.custom-delete {
+    background-color: #334eac; /* Merah-oranye */
+    color: white;
+    border: none;
+}
+
+.custom-btn {
+        background-color: #334eac; /* Ganti dengan warna yang diinginkan */
+        color: white; /* Warna teks */
+        border: none;
+    }
+
+
+
+
         /* Responsif untuk layar kecil */
         @media (max-width: 768px) {
             .sidebar {
@@ -118,6 +139,12 @@
 
         <div id="wisata-section" class="table-container">
             <h3>Kelola Wisata</h3>
+
+            <!-- Tombol Tambah Data Wisata -->
+            <button class="btn custom-btn mb-3" data-bs-toggle="modal" data-bs-target="#addModal">
+                Tambah Wisata
+            </button>
+
             <table id="wisataTable" class="display" style="width:100%">
                 <thead>
                     <tr>
@@ -199,6 +226,60 @@
           </div>
       </div>
     </div>
+
+    <!-- Modal Tambah Wisata -->
+<div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addModalLabel">Tambah Data Wisata</h5>
+                <!-- Tombol X untuk menutup modal -->
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addForm">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="add-nama">Nama Tempat</label>
+                        <input type="text" id="add-nama" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-kategori">Kategori</label>
+                        <select id="add-kategori" class="form-control" required>
+                            <option value="Hotel">Hotel</option>
+                            <option value="Kuliner">Kuliner</option>
+                            <option value="Oleh-Oleh">Oleh-Oleh</option>
+                            <option value="Objek Wisata">Objek Wisata</option>
+                            <option value="Tempat Nongkrong">Tempat Nongkrong</option>
+                            <option value="Kota Lama">Kota Lama</option>
+                            <option value="Spa">Spa</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-deskripsi">Deskripsi</label>
+                        <textarea id="add-deskripsi" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-alamat">Alamat</label>
+                        <input type="text" id="add-alamat" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-rating">Rating</label>
+                        <input type="number" id="add-rating" class="form-control" min="0" max="5" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="add-foto">Foto</label>
+                        <input type="file" id="add-foto" class="form-control-file" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <!-- Tombol Batal untuk menutup modal -->
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="submit" class="btn btn-primary">Tambah Wisata</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 
     <!-- Scripts -->

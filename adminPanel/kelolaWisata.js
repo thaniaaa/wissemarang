@@ -22,8 +22,8 @@ function loadWisataData() {
                     item.deskripsi ? item.deskripsi.substring(0, 50) + "..." : "Tidak ada deskripsi",
                     item.alamat || "Tidak ada alamat",
                     item.rating || "0",
-                    `<button class="btn btn-warning btn-sm edit-btn" data-id="${item.id}">Edit</button> 
-                    <button class="btn btn-danger btn-sm delete-btn" data-id="${item.id}">Delete</button>`
+                    `<button class="btn btn-sm custom-edit edit-btn" data-id="${item.id}">Edit</button> 
+<button class="btn btn-sm custom-delete delete-btn" data-id="${item.id}">Delete</button>`
 
                 ]).draw();
             });
