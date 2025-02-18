@@ -4,7 +4,7 @@ const db = require('../models/db'); // Pastikan file db.js sesuai dengan path ya
 const verifyToken = require('../middlewares/authMiddleware');
 
 // Menambahkan atau memperbarui rating dan ulasan
-router.post('/:wisata_id', verifyToken, (req, res) => {
+router.post('/:wisata_id', verifyToken,  (req, res) => {
     const { wisata_id } = req.params;  // Mengambil wisata_id dari URL params
     const user_id = req.user.id;  // Mengambil user_id dari token yang sudah didecode
     const { rating, reviewText } = req.body;  // Mengambil rating dan review dari body
@@ -40,13 +40,12 @@ router.post('/:wisata_id', verifyToken, (req, res) => {
     });
 });
 
-// Mendapatkan rating dan review berdasarkan wisata_id dan user_id
-router.get('/:wisata_id', verifyToken, (req, res) => {
+// Mendapatkan semua rating dan review berdasarkan wisata_id (tanpa perlu login)
+router.get('/:wisata_id', (req, res) => {
     const { wisata_id } = req.params;
-    const user_id = req.user.id; // Mendapatkan user_id dari token yang sudah didecode
 
-    const query = 'SELECT rating, review_text FROM ratings WHERE wisata_id = ? AND user_id = ?';
-    db.query(query, [wisata_id, user_id], (err, results) => {
+    const query = 'SELECT user_id, rating, review_text FROM ratings WHERE wisata_id = ?';
+    db.query(query, [wisata_id], (err, results) => {
         if (err) {
             console.error("Error fetching rating:", err);
             return res.status(500).json({ error: 'Database error' });
@@ -54,9 +53,11 @@ router.get('/:wisata_id', verifyToken, (req, res) => {
         if (results.length === 0) {
             return res.status(404).json({ message: 'Rating atau review tidak ditemukan' });
         }
-        res.json(results[0]);
+        res.json(results); // Mengembalikan semua review dan rating untuk wisata tertentu
     });
 });
+
+
 
 // Mendapatkan semua rating untuk sebuah wisata (misalnya untuk menampilkan rata-rata)
 router.get('/wisata/:wisata_id', (req, res) => {
