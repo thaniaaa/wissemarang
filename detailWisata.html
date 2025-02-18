@@ -30,6 +30,92 @@ https://templatemo.com/tm-579-cyborg-gaming
 
 <body>
 
+  <style>
+    .review-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+}
+
+.rating-summary {
+    margin-bottom: 20px;
+}
+
+.average-rating {
+    display: flex;
+    align-items: center;
+}
+
+.stars {
+    color: #f39c12;
+}
+
+.star {
+    font-size: 20px;
+}
+
+.star.empty {
+    color: #ccc;
+}
+
+.average {
+    font-size: 24px;
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+.rating-count {
+    margin-left: 10px;
+    color: #777;
+}
+
+.latest-rating {
+    margin-top: 10px;
+}
+
+.latest-star {
+    color: #f39c12;
+    font-size: 18px;
+    margin-right: 5px;
+}
+
+.all-reviews {
+    margin-top: 20px;
+}
+
+.review {
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.username {
+    font-weight: bold;
+}
+
+.rating {
+    font-size: 18px;
+    color: #f39c12;
+}
+
+.review-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.review-footer {
+    margin-top: 10px;
+    font-size: 12px;
+    color: #777;
+}
+
+  </style>
+
   <!-- ***** Preloader Start ***** -->
   <div id="js-preloader" class="js-preloader">
     <div class="preloader-inner">
@@ -101,14 +187,16 @@ https://templatemo.com/tm-579-cyborg-gaming
                             
                             <!-- Galeri Gambar akan muncul di dalam kotak biru -->
                             <div class="container mt-4" id="gallery-container-wrapper">
-                                <h4>Galeri Gambar:</h4>
+                                <h4 style="color: black;">Galeri Gambar:</h4>
                                 <div id="gallery-container" class="row">
                                     <!-- Gambar galeri akan dimasukkan melalui JavaScript -->
                                 </div>
                             </div>
                             
                             <div class="container mt-4">
-                              <h4>Beri Rating:</h4>
+                              <h4 style="color: black;">Beri Rating:</h4>
+                              <div id="average-rating"></div>  <!-- Menampilkan rata-rata rating -->
+
                               <div class="rating">
                                   <span class="star" data-value="1">&#9733;</span>
                                   <span class="star" data-value="2">&#9733;</span>
@@ -121,18 +209,19 @@ https://templatemo.com/tm-579-cyborg-gaming
                                   <textarea id="review-text" placeholder="Tulis ulasan Anda..."></textarea>
                                   <button id="submit-review" class="btn btn-primary">Kirim</button>
                               </div>
-                              
-                              <!-- Form Edit -->
+                          
+                              <!-- Form Edit
                               <div class="edit-review-form" style="display:none;">
                                   <textarea id="edit-review-text"></textarea>
                                   <button id="submit-edit" class="btn btn-primary">Simpan Editan</button>
-                              </div>
+                              </div> -->
                           
-                              <!-- Kontainer untuk Menampilkan Komentar -->
+                              <!-- Komentar yang diambil dari backend -->
                               <div id="komentar-container">
-                                  <!-- Komentar akan dimuat di sini -->
+                                  <!-- Komentar akan dimuat di sini secara dinamis -->
                               </div>
                           </div>
+                          
                           
                         </div>
                     </div>
@@ -153,62 +242,105 @@ https://templatemo.com/tm-579-cyborg-gaming
           
           <!-- Tambahkan CSS di sini -->
           <style>
-            .rating {
-                font-size: 30px;
-                cursor: pointer;
-            }
-        
-            .star {
-                color: gray;
-                transition: color 0.3s ease;
-            }
-        
-            .star:hover,
-            .star.active {
-                color: #ffc107;
-            }
-        
-            h4 {
-                color: #334eac; /* Warna biru untuk judul */
-            }
-        
-            .review-box {
-                max-width: 50%; /* Kolom review lebih kecil */
-                background: #f8f9fa;
-                padding: 15px;
-                border-radius: 10px;
-                margin-top: 10px;
-            }
-        
-            .review-container {
-            max-width: 70%; /* Membatasi lebar container review */
-            margin-left: 0; /* Menempel ke kiri */
-            margin-right: auto; /* Menghindari rata tengah */
-            }
 
-            .review-card {
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            }
+.review-container {
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+}
 
+.rating-summary {
+    margin-bottom: 20px;
+}
 
-            .review-card {
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            }
+.rating {
+    display: flex;
+    align-items: center;
+}
 
-            .review-form {
-            max-width: 70%; /* Membatasi lebar form */
-            margin-left: 0; /* Menempel ke kiri */
-            margin-right: auto; /* Menghindari rata tengah */
-            }
+.star {
+    font-size: 30px;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
 
-            .review-form textarea {
-            width: 100%; /* Pastikan textarea mengikuti lebar form */
-            height: 80px; /* Perkecil tinggi textarea */
-            resize: none; /* Mencegah pengguna memperbesar textarea */
-            }
+.star.active,
+.star:hover {
+    color: #ffc107; /* Warna emas untuk bintang yang aktif */
+}
 
+.review-form {
+    max-width: 70%; /* Membatasi lebar form */
+    margin-left: 0; /* Menempel ke kiri */
+    margin-right: auto; /* Menghindari rata tengah */
+    padding-top: 20px;
+}
+
+.review-form textarea {
+    width: 100%; /* Pastikan textarea mengikuti lebar form */
+    height: 80px; /* Perkecil tinggi textarea */
+    padding: 10px;
+    resize: none; /* Mencegah pengguna memperbesar textarea */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.edit-review-form {
+    margin-top: 20px;
+}
+
+.review-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.review-footer {
+    font-size: 12px;
+    color: #777;
+}
+
+.username {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.rating {
+    font-size: 14px;
+    color: #ffc107;
+}
+
+.review-text {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.komentar-item {
+    margin-bottom: 15px;
+}
+
+.edit-btn {
+    font-size: 12px;
+    color: #007bff;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+.edit-btn:hover {
+    text-decoration: underline;
+}
 
         </style>
         
