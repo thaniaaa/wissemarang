@@ -20,13 +20,31 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
-<!--
 
-TemplateMo 579 Cyborg Gaming
+    
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
 
-https://templatemo.com/tm-579-cyborg-gaming
 
--->
+    <style>
+
+      .favorite-icon {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          font-size: 24px;
+          color: red;
+          cursor: pointer;
+          transition: 0.3s;
+          background: #d2d2d2;
+          border-radius: 50%;
+          padding: 5px;
+      }
+
+      .favorite-icon:hover {
+          color: darkred;
+      }
+  </style>
+
   </head>
 
 <body>
@@ -68,7 +86,7 @@ https://templatemo.com/tm-579-cyborg-gaming
                         <li><a href="index.html">Home</a></li>
                         <li><a href="index.html#kategori-wisata">Kategori</a></li>
                         <li><a href="index.html#tempat-populer">Popular</a></li>
-                        <li><a href="streams.html" class="active">Favorite</a></li>
+                        <li><a href="favorite.html" class="active">Favorite</a></li>
                         <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
                     </ul>   
                     <a class='menu-trigger'>
@@ -90,8 +108,6 @@ https://templatemo.com/tm-579-cyborg-gaming
           <!-- ***** Featured Games Start ***** -->
           <div class="row">
             <div class="col-lg-8">
-              
-                
               </div>
             </div>
             
@@ -99,214 +115,14 @@ https://templatemo.com/tm-579-cyborg-gaming
           <!-- ***** Live Stream Start ***** -->
           <div class="live-stream">
             <div class="col-lg-12">
-                <div class="featured-games header-text">
               <div class="heading-section">
                 <h4><em>Tempat Favorite</em> Yang Tersimpan</h4>
               </div>
+            <div class="row" id="favorite-list">
+              <!-- Data favorit akan dimasukkan melalui JavaScript -->
             </div>
-            <div class="row">
-              <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-05.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                            <a href="#"><i class="fas fa-bookmark"></i></a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <span> Kengan Omeg</span>
-                    <h4>Just Talking With Fans</h4>
-                  </div> 
-                </div>
-              </div>
-              <!-- <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-06.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                            <a href="#"><i class="fas fa-bookmark"></i></a>
-                        </div>
-                        <ul>
-                          <li><a href="#"><i class="fa fa-eye"></i> 1.2K</a></li>
-                          <li><a href="#"><i class="fa fa-gamepad"></i> CS-GO</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <div class="avatar">
-                      <img src="assets/images/avatar-02.jpg" alt="" style="max-width: 46px; border-radius: 50%; float: left;">
-                    </div>
-                    <span><i class="fa fa-check"></i> LahutaMalc</span>
-                    <h4>CS-GO 36 Hours Live Stream</h4>
-                  </div> 
-                </div>
-              </div>
-              <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-07.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                          <a href="#">Live</a>
-                        </div>
-                        <ul>
-                          <li><a href="#"><i class="fa fa-eye"></i> 1.2K</a></li>
-                          <li><a href="#"><i class="fa fa-gamepad"></i> CS-GO</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <div class="avatar">
-                      <img src="assets/images/avatar-03.jpg" alt="" style="max-width: 46px; border-radius: 50%; float: left;">
-                    </div>
-                    <span><i class="fa fa-check"></i> Areluwa</span>
-                    <h4>Maybe Nathej Allnight Chillin'</h4>
-                  </div> 
-                </div>
-              </div>
-              <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-08.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                          <a href="#">Live</a>
-                        </div>
-                        <ul>
-                          <li><a href="#"><i class="fa fa-eye"></i> 1.2K</a></li>
-                          <li><a href="#"><i class="fa fa-gamepad"></i> CS-GO</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <div class="avatar">
-                      <img src="assets/images/avatar-04.jpg" alt="" style="max-width: 46px; border-radius: 50%; float: left;">
-                    </div>
-                    <span><i class="fa fa-check"></i> NewGangTeam</span>
-                    <h4>Live Streaming Till Morning</h4>
-                  </div> 
-                </div>
-              </div>
-              <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-07.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                          <a href="#">Live</a>
-                        </div>
-                        <ul>
-                          <li><a href="#"><i class="fa fa-eye"></i> 1.2K</a></li>
-                          <li><a href="#"><i class="fa fa-gamepad"></i> CS-GO</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <div class="avatar">
-                      <img src="assets/images/avatar-01.jpg" alt="" style="max-width: 46px; border-radius: 50%; float: left;">
-                    </div>
-                    <span><i class="fa fa-check"></i> Kengan Omeg</span>
-                    <h4>Just Talking With Fans</h4>
-                  </div> 
-                </div>
-              </div>
-              <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-08.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                          <a href="#">Live</a>
-                        </div>
-                        <ul>
-                          <li><a href="#"><i class="fa fa-eye"></i> 1.2K</a></li>
-                          <li><a href="#"><i class="fa fa-gamepad"></i> CS-GO</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <div class="avatar">
-                      <img src="assets/images/avatar-02.jpg" alt="" style="max-width: 46px; border-radius: 50%; float: left;">
-                    </div>
-                    <span><i class="fa fa-check"></i> LahutaMalc</span>
-                    <h4>CS-GO 36 Hours Live Stream</h4>
-                  </div> 
-                </div>
-              </div>
-              <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-05.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                          <a href="#">Live</a>
-                        </div>
-                        <ul>
-                          <li><a href="#"><i class="fa fa-eye"></i> 1.2K</a></li>
-                          <li><a href="#"><i class="fa fa-gamepad"></i> CS-GO</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <div class="avatar">
-                      <img src="assets/images/avatar-03.jpg" alt="" style="max-width: 46px; border-radius: 50%; float: left;">
-                    </div>
-                    <span><i class="fa fa-check"></i> Areluwa</span>
-                    <h4>Maybe Nathej Allnight Chillin'</h4>
-                  </div> 
-                </div>
-              </div>
-              <div class="col-lg-3 col-sm-6">
-                <div class="item">
-                  <div class="thumb">
-                    <img src="assets/images/stream-06.jpg" alt="">
-                    <div class="hover-effect">
-                      <div class="content">
-                        <div class="live">
-                          <a href="#">Live</a>
-                        </div>
-                        <ul>
-                          <li><a href="#"><i class="fa fa-eye"></i> 1.2K</a></li>
-                          <li><a href="#"><i class="fa fa-gamepad"></i> CS-GO</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="down-content">
-                    <div class="avatar">
-                      <img src="assets/images/avatar-04.jpg" alt="" style="max-width: 46px; border-radius: 50%; float: left;">
-                    </div>
-                    <span><i class="fa fa-check"></i> NewGangTeam</span>
-                    <h4>Live Streaming Till Morning</h4>
-                  </div> 
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div class="main-button">
-                  <a href="streams.html">Load More Streams</a>
-                </div>
-              </div>
-            </div>
-        </div>
-          </div>
-          ***** Live Stream End ***** -->
+            <!-- Pesan untuk pengguna yang belum login -->
+            <div id="not-logged-in-message" style="text-align: center; font-size: 18px; color: red;"></div>
 
         </div>
       </div>
@@ -337,6 +153,144 @@ https://templatemo.com/tm-579-cyborg-gaming
   <script src="assets/js/popup.js"></script>
   <script src="assets/js/custom.js"></script>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const token = localStorage.getItem('token');  // Ambil token dari localStorage
+    
+        const favoriteList = document.getElementById('favorite-list');
+        const notLoggedInMessage = document.getElementById('not-logged-in-message');  // Element to show the message
+    
+        if (!token) {
+            // Show message for users not logged in
+            notLoggedInMessage.innerHTML = '<p>Silakan login terlebih dahulu untuk melihat dan menambah tempat favorit.</p>';
+        } else {
+            const decodedToken = JSON.parse(atob(token.split('.')[1])); // Mendekode JWT
+            const userId = decodedToken.id;
+    
+            // Ambil data favorit dari backend
+            fetch(`http://localhost:5000/api/favorite/${userId}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(favorites => {
+                if (favorites.length === 0) {
+                    favoriteList.innerHTML = '<p>Tidak ada tempat favorit yang disimpan.</p>';
+                } else {
+                    // Menampilkan data favorit ke halaman
+                    favorites.forEach(fav => {
+                        const favoriteItem = document.createElement('div');
+                        favoriteItem.classList.add('col-lg-3', 'col-sm-6', 'mb-4');
+    
+                        favoriteItem.innerHTML = `
+                            <div class="item">
+                                <div class="thumb">
+                                    <img src="http://localhost:5000/${fav.foto}" alt="${fav.nama_tempat}" class="img-fluid">
+                                    <div class="hover-effect">
+                                        <div class="content">
+                                            <div class="live">
+                                                <i class="favorite-icon fa-solid fa-heart" data-id="${fav.id}" onclick="toggleFavorite(this, ${userId})"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="down-content">
+                                    <h4>${fav.nama_tempat}</h4>
+                                    <p>${fav.kategori}</p>
+                                    <p><strong>Rating:</strong> ${fav.rating} ⭐</p>
+                                </div>
+                            </div>
+                        `;
+    
+                        // Cek apakah wisata ini sudah ada di daftar favorit
+                        const isFavorited = favorites.some(favItem => favItem.id === fav.id);
+    
+                        // Jika sudah ada di favorit, ubah ikon menjadi terisi
+                        const icon = favoriteItem.querySelector('.favorite-icon');
+                        if (isFavorited) {
+                            icon.classList.add('fa-solid');
+                            icon.classList.remove('fa-regular');
+                        }
+    
+                        favoriteList.appendChild(favoriteItem);
+                    });
+    
+                    // Inisialisasi Owl Carousel untuk menampilkan tempat favorit
+                    $(".owl-carousel").owlCarousel({
+                        items: 3,
+                        loop: true,
+                        autoplay: true,
+                        autoplayTimeout: 3000,
+                        dots: false
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching favorite places:', error);
+            });
+        }
+    });
+    
+    // Fungsi untuk menambah atau menghapus dari favorit
+    function toggleFavorite(icon, userId) {
+        const wisataId = icon.getAttribute('data-id');  // Ambil ID wisata
+        const token = localStorage.getItem('token');  // Ambil token dari localStorage
+    
+        if (!token) {
+            alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');
+            return;
+        }
+    
+        const isFavorited = icon.classList.contains("fa-solid"); // Cek apakah sudah ada di favorit
+    
+        // Jika belum difavoritkan, tambahkan ke favorit
+        if (!isFavorited) {
+            fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ userId, wisataId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Setelah menambah, ubah ikon menjadi berwarna
+                icon.classList.add("fa-solid");
+                icon.classList.remove("fa-regular");
+            })
+            .catch(error => {
+                console.error("Error adding to favorite:", error);
+            });
+        } else {
+            // Jika sudah difavoritkan, hapus dari favorit
+            fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Setelah menghapus, ubah ikon menjadi abu-abu
+                icon.classList.add("fa-regular");
+                icon.classList.remove("fa-solid");
+    
+                // Menghapus item favorit yang baru saja dihapus dari DOM
+                const favoriteItem = icon.closest('.item');
+                if (favoriteItem) {
+                    favoriteItem.remove();  // Hapus elemen dari halaman
+                }
+            })
+            .catch(error => {
+                console.error("Error removing from favorite:", error);
+            });
+        }
+    }
+    </script>
+    
 
   </body>
 

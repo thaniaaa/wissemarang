@@ -8,11 +8,11 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <title>Cyborg - Awesome HTML5 Template</title>
+    <title>Wissemar - Kota Lama</title>
 
     <!-- Bootstrap core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="assets/css/fontawesome.css">
@@ -20,6 +20,26 @@
     <link rel="stylesheet" href="assets/css/owl.css">
     <link rel="stylesheet" href="assets/css/animate.css">
     <link rel="stylesheet"href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+
+    <style>
+
+      .favorite-icon {
+          position: absolute;
+          top: 10px;
+          right: 10px;
+          font-size: 24px;
+          color: red;
+          cursor: pointer;
+          transition: 0.3s;
+          background: #d2d2d2;
+          border-radius: 50%;
+          padding: 5px;
+      }
+
+      .favorite-icon:hover {
+          color: darkred;
+      }
+  </style>
 <!--
 
 TemplateMo 579 Cyborg Gaming
@@ -66,8 +86,8 @@ https://templatemo.com/tm-579-cyborg-gaming
                      <!-- ***** Menu Start ***** -->
                      <ul class="nav">
                         <li><a href="index.html" class="active">Home</a></li>
-                        <li><a href="index.html#kategori-wisata">Kategori</a></li>
-                        <li><a href="index.html#tempat-populer">Popular</a></li>
+                        <li><a href="browse.html">Kategori</a></li>
+                        <li><a href="details.html">Popular</a></li>
                         <li><a href="favorite.html">Favorite</a></li> 
                         <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
                     </ul>   
@@ -105,49 +125,6 @@ https://templatemo.com/tm-579-cyborg-gaming
                 <div class="heading-section">
                   <h4><em>Kota</em> Semarang</h4>
                 </div>
-                <!----
-                <ul>
-                  <li>
-                    <span>01</span>
-                    <img src="assets/images/avatar-01.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> LahutaM</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>02</span>
-                    <img src="assets/images/avatar-02.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> Kengan</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>03</span>
-                    <img src="assets/images/avatar-03.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> Areluwa</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>04</span>
-                    <img src="assets/images/avatar-04.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> Omeg</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                  <li>
-                    <span>05</span>
-                    <img src="assets/images/avatar-01.jpg" alt="" style="max-width: 46px; border-radius: 50%; margin-right: 15px;">
-                    <h6><i class="fa fa-check"></i> GangTeam</h6>
-                    <div class="main-button">
-                      <a href="#">Follow</a>
-                    </div>
-                  </li>
-                </ul> -->
               </div> 
             </div>
           </div>
@@ -200,81 +177,148 @@ https://templatemo.com/tm-579-cyborg-gaming
   <script src="assets/js/custom.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        fetch("http://localhost:5000/api/wisata/kategori/Kota%20Lama")
-            .then(response => response.json())
-            .then(data => {
-                if (!Array.isArray(data)) {
-                    console.error("Data tidak valid:", data);
-                    return;
-                }
+  document.addEventListener("DOMContentLoaded", function () {
+    const token = localStorage.getItem('token');  // Ambil token dari localStorage
 
-                // Sorting berdasarkan rating tertinggi
-                data.sort((a, b) => b.rating - a.rating);
+    // Menarik data wisata tanpa login
+    fetch("http://localhost:5000/api/wisata/kategori/Kota%20Lama")
+        .then(response => response.json())
+        .then(data => {
+            if (!Array.isArray(data)) {
+                console.error("Data tidak valid:", data);
+                return;
+            }
 
-                 // Tampilkan kota lama populer di carousel
-                 const kotaLamaCarousel = document.getElementById("kota-lama-carousel");
-                    kotaLamaCarousel.innerHTML = "";
-                    
-                    data.slice(0, 5).forEach(wisata => { // Hanya ambil 5
-                        const item = document.createElement("div");
-                        item.classList.add("item");
+            // Sorting berdasarkan rating tertinggi
+            data.sort((a, b) => b.rating - a.rating);
 
-                        item.innerHTML = `
-                            <div class="thumb">
-                                <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
-                            </div>
-                            <h4>${wisata.nama_tempat}<br>
-                            <p><strong>Rating:</strong> ${wisata.rating ? wisata.rating : 'Tidak ada rating'} ⭐</p>
-                        `;
+            // Menampilkan data wisata ke carousel
+            const kotaLamaCarousel = document.getElementById("kota-lama-carousel");
+            kotaLamaCarousel.innerHTML = "";
 
-                        kotaLamaCarousel.appendChild(item);
-                    });
+            data.slice(0, 5).forEach(wisata => { // Hanya ambil 5
+                const item = document.createElement("div");
+                item.classList.add("item");
 
-                // Inisialisasi carousel
-                $(".owl-carousel").owlCarousel({
-                        items: 3,
-                        loop: true,
-                        autoplay: true,
-                        autoplayTimeout: 3000,
-                        dots: false
-                    });
+                item.innerHTML = `
+                    <div class="thumb">
+                        <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
+                    </div>
+                    <h4>${wisata.nama_tempat}<br>
+                    <p><strong>Rating:</strong> ${wisata.rating ? wisata.rating : 'Tidak ada rating'} ⭐</p>
+                `;
 
-                // Menampilkan daftar semua tempat di Kota Lama
-                const kotaLamaList = document.getElementById("kota-lama-list");
-                kotaLamaList.innerHTML = "";
+                // Menambahkan event listener untuk mengarahkan ke halaman detail
+                item.addEventListener('click', function () {
+                    window.location.href = `detailWisata.html?id=${wisata.id}`;
+                });
 
-                data.forEach(wisata => {
-                        const wisataItem = document.createElement("div");
-                        wisataItem.classList.add("col-lg-3", "col-sm-6", "mb-4");
+                kotaLamaCarousel.appendChild(item);
+            });
 
-                        wisataItem.innerHTML = `
-                            <div class="item">
-                                <div class="thumb">
-                                    <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
-                                    <div class="hover-effect">
-                                        <div class="content">
-                                            <div class="live">
-                                                <a href="#"><i class="fas fa-bookmark"></i></a>
-                                            </div>
-                                        </div>
+            // Inisialisasi carousel
+            $(".owl-carousel").owlCarousel({
+                items: 3,
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                dots: false
+            });
+
+            // Menampilkan daftar semua tempat di Kota Lama
+            const kotaLamaList = document.getElementById("kota-lama-list");
+            kotaLamaList.innerHTML = "";
+
+            data.forEach(wisata => {
+                const wisataItem = document.createElement("div");
+                wisataItem.classList.add("col-lg-3", "col-sm-6", "mb-4");
+
+                wisataItem.innerHTML = `
+                    <div class="item">
+                        <div class="thumb">
+                            <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
+                            <div class="hover-effect">
+                                <div class="content">
+                                    <div class="live">
+                                        <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this)"></i>
                                     </div>
                                 </div>
-                                <div class="down-content">
-                                    <h4>${wisata.nama_tempat}</h4>
-                                    
-                                    <p><strong>Rating:</strong> ${wisata.rating} ⭐</p>
-                                </div>
                             </div>
-                        `;
+                        </div>
+                        <div class="down-content">
+                            <h4>${wisata.nama_tempat}</h4>
+                            <p>${wisata.deskripsi.substring(0, 100)}...</p>
+                            <p><strong>Rating:</strong> ${wisata.rating} ⭐</p>
+                        </div>
+                    </div>
+                `;
 
-                        kotaLamaList.appendChild(wisataItem);
-                    });
+                // Menambahkan event listener untuk mengarahkan ke halaman detail
+                wisataItem.addEventListener('click', function () {
+                    window.location.href = `detailWisata.html?id=${wisata.id}`;
+                });
 
-            })
+                kotaLamaList.appendChild(wisataItem);
+            });
+
+        })
         .catch(error => console.error("Gagal mengambil data wisata:", error));
 });
+
+// Fungsi untuk toggle favorit
+function toggleFavorite(icon) {
+    const token = localStorage.getItem('token');  // Ambil token dari localStorage
+    if (!token) {
+        alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');
+        return;
+    }
+
+    const wisataId = icon.getAttribute('data-id');  // Ambil ID wisata
+    const userId = JSON.parse(atob(token.split('.')[1])).id;  // Mendekode JWT dan ambil userId
+
+    const isFavorited = icon.classList.contains("fa-solid"); // Cek apakah sudah ada di favorit
+
+    // Jika belum difavoritkan, tambahkan ke favorit
+    if (!isFavorited) {
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, wisataId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menambah, ubah ikon menjadi berwarna
+            icon.classList.add("fa-solid");
+            icon.classList.remove("fa-regular");
+        })
+        .catch(error => {
+            console.error("Error adding to favorite:", error);
+        });
+    } else {
+        // Jika sudah difavoritkan, hapus dari favorit
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menghapus, ubah ikon menjadi abu-abu
+            icon.classList.add("fa-regular");
+            icon.classList.remove("fa-solid");
+        })
+        .catch(error => {
+            console.error("Error removing from favorite:", error);
+        });
+    }
+}
+
     </script>
+    
 
 
 

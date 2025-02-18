@@ -49,7 +49,7 @@ router.get('/', (req, res) => {
 router.get('/kategori/:kategori', (req, res) => {
     const { kategori } = req.params;
     
-    const query = 'SELECT nama_tempat, deskripsi, foto, rating FROM wisata WHERE kategori = ?';
+    const query = 'SELECT id, nama_tempat, deskripsi, foto, rating FROM wisata WHERE kategori = ?';
 
     db.query(query, [kategori], (err, results) => {
         if (err) {
@@ -219,6 +219,23 @@ router.get('/top-wisata', (req, res) => {
         res.json(results);
     });
 });
+
+
+// Route untuk mendapatkan galeri gambar wisata berdasarkan wisata_id
+router.get('/gallery/:wisataId', (req, res) => {
+    const wisataId = req.params.wisataId;
+    db.query('SELECT * FROM wisata_gallery WHERE wisata_id = ?', [wisataId], (err, results) => {
+        if (err) {
+            console.error("Error fetching gallery images:", err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No images found for this wisata' });
+        }
+        res.json(results);  // Mengembalikan data dalam format JSON
+    });
+});
+
 
 
 
