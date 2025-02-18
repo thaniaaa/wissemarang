@@ -31,8 +31,8 @@ $(document).ready(function() {
                     item.role || "Tidak ada role",
                     createdAtFormatted || "Tidak ada tanggal",
                     `<img src="${item.profile_picture}" width="50" onerror="this.onerror=null; this.src='assets/images/no-image.png';">`,
-                    `<button class="btn btn-warning btn-sm edit-btn" data-id="${item.id}">Edit</button>
-                     <button class="btn btn-danger btn-sm delete-btn" data-id="${item.id}">Delete</button>`
+                    `<button class="btn btn-sm custom-edit edit-btn" data-id="${item.id}">Edit</button> 
+<button class="btn btn-sm custom-delete delete-btn" data-id="${item.id}">Delete</button>`
                 ]).draw();
             });
         })

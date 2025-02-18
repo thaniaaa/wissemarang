@@ -872,6 +872,13 @@ Most Popular Style
   margin-bottom: 30px;
 }*/
 
+.kategori-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  justify-items: center;
+}
+
 .most-popular .row {
   display: grid;
   grid-template-columns: repeat(4, 1fr); /* 3 kolom per baris */
@@ -883,7 +890,8 @@ Most Popular Style
   background-color: #fff;
   padding: 20px;
   border-radius: 23px;
-  width: 250px; /* Lebar seragam */
+  width: 100%;
+  max-width: 280px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease-in-out;
@@ -944,6 +952,9 @@ Most Popular Style
 
   .most-popular .item {
     width: 90%;
+  }
+  .kategori-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
 
@@ -1653,7 +1664,7 @@ Game Details Style
 }
 
 .game-details .content .left-info ul li:last-child i {
-  color: #ec6090;
+  color: #334eac;
 }
 
 .game-details .content .right-info {
@@ -1681,7 +1692,7 @@ Game Details Style
 } 
 
 .game-details .content .right-info ul li i {
-  color: #ec6090;
+  color: #334eac;
 }
 
 .game-details .main-border-button {
@@ -1825,7 +1836,7 @@ Profile Style
 .main-profile {
   border-radius: 23px;
   padding: 30px;
-  background-color: #1f2122;
+  background-color: #bad6eb;
 }
 
 .main-profile .main-info span {
@@ -1852,7 +1863,7 @@ Profile Style
 .main-profile ul {
   border-radius: 23px;
   padding: 30px;
-  background-color: #27292a;
+  background-color: #bad6eb;
 }
 
 .main-profile ul li {
@@ -1867,7 +1878,7 @@ Profile Style
 .main-profile ul li span {
   float: right;
   font-weight: 500;
-  color: #ec6090;
+  color: #334eac;
 }
 
 .main-profile ul li:last-child {
@@ -1931,6 +1942,40 @@ Profile Style
   margin-top: 10px;
   text-align: center;
 }
+
+.btn-white {
+  background-color: white;
+  color: #334eac;
+  border: none;
+  padding: 6px;
+  text-align: center;
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+  
+}
+
+.btn-white:hover {
+  background-color: #f0f0f0;
+}
+
+#logout-btn {
+  background-color: #334eac; /* Warna biru seperti tombol Login */
+  color: white; /* Warna teks putih */
+  border: none; /* Hapus border */
+  width: 100%; /* Lebar penuh */
+  padding: 6px; /* Padding agar lebih proporsional */
+  font-weight: bold; /* Teks lebih tegas */
+  border-radius: 6px; /* Sudut membulat seperti tombol Login */
+  text-align: center; /* Teks di tengah */
+  cursor: pointer; /* Ubah kursor menjadi tangan saat hover */
+  transition: background-color 0.3s ease; /* Animasi perubahan warna */
+}
+
+#logout-btn:hover {
+  background-color: #334eac; /* Warna biru lebih gelap saat hover */
+}
+
 
 /* 
 ---------------------------------------------
