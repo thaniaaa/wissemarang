@@ -199,6 +199,11 @@
                             <p><strong>Rating:</strong> ${wisata.rating ? wisata.rating : 'Tidak ada rating'} ⭐</p>
                         `;
 
+                         // Menambahkan event listener untuk mengarahkan ke halaman detail
+                            item.addEventListener('click', function () {
+                                window.location.href = `detailWisata.html?id=${wisata.id}`;
+                            });
+
                         tempatNongkrongCarousel.appendChild(item);
                     });
 
@@ -226,7 +231,7 @@
                                     <div class="hover-effect">
                                         <div class="content">
                                             <div class="live">
-                                                <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this)"></i>
+                                                <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this, event)"></i>
                                             </div>
                                         </div>
                                     </div>
@@ -241,6 +246,13 @@
 
                         tempatNongkrongList.appendChild(wisataItem);
                     });
+
+                    
+                        // Menambahkan event listener untuk mengarahkan ke halaman detail
+                        wisataItem.addEventListener('click', function () {
+                            window.location.href = `detailWisata.html?id=${wisata.id}`;
+                        });
+
 
             })
         .catch(error => console.error("Gagal mengambil data wisata:", error));

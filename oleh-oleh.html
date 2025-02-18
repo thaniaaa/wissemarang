@@ -199,7 +199,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             <p><strong>Rating:</strong> ${wisata.rating ? wisata.rating : 'Tidak ada rating'} ⭐</p>
                         `;
 
-
+                             // Menambahkan event listener untuk mengarahkan ke halaman detail
+                              item.addEventListener('click', function () {
+                                  window.location.href = `detailWisata.html?id=${wisata.id}`;
+                              });
 
                         olehOlehCarousel.appendChild(item);
                     });
@@ -228,8 +231,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <div class="hover-effect">
                                         <div class="content">
                                             <div class="live">
-                                                <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this)"></i>
-                                            </div>
+                                               <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this, event)"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -240,6 +242,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                 </div>
                             </div>
                         `;
+
+                                  // Menambahkan event listener untuk mengarahkan ke halaman detail
+                          wisataItem.addEventListener('click', function () {
+                              window.location.href = `detailWisata.html?id=${wisata.id}`;
+                          });
 
                         olehOlehList.appendChild(wisataItem);
                     });
