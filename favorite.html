@@ -233,62 +233,121 @@
         }
     });
     
-    // Fungsi untuk menambah atau menghapus dari favorit
-    function toggleFavorite(icon, userId) {
-        const wisataId = icon.getAttribute('data-id');  // Ambil ID wisata
-        const token = localStorage.getItem('token');  // Ambil token dari localStorage
-    
-        if (!token) {
-            alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');
-            return;
-        }
-    
-        const isFavorited = icon.classList.contains("fa-solid"); // Cek apakah sudah ada di favorit
-    
-        // Jika belum difavoritkan, tambahkan ke favorit
-        if (!isFavorited) {
-            fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ userId, wisataId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Setelah menambah, ubah ikon menjadi berwarna
-                icon.classList.add("fa-solid");
-                icon.classList.remove("fa-regular");
-            })
-            .catch(error => {
-                console.error("Error adding to favorite:", error);
-            });
-        } else {
-            // Jika sudah difavoritkan, hapus dari favorit
-            fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Setelah menghapus, ubah ikon menjadi abu-abu
-                icon.classList.add("fa-regular");
-                icon.classList.remove("fa-solid");
-    
-                // Menghapus item favorit yang baru saja dihapus dari DOM
-                const favoriteItem = icon.closest('.item');
-                if (favoriteItem) {
-                    favoriteItem.remove();  // Hapus elemen dari halaman
-                }
-            })
-            .catch(error => {
-                console.error("Error removing from favorite:", error);
-            });
-        }
+   // Fungsi untuk menambah atau menghapus dari favorit
+function toggleFavorite(icon, userId) {
+    const wisataId = icon.getAttribute('data-id');  // Ambil ID wisata
+    const token = localStorage.getItem('token');  // Ambil token dari localStorage
+
+    // Jika token tidak ada (pengguna belum login), tampilkan peringatan login
+    if (!token) {
+        alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');
+        return;  // Tidak melanjutkan jika belum login
     }
+
+    const isFavorited = icon.classList.contains("fa-solid"); // Cek apakah sudah ada di favorit
+
+    // Jika belum difavoritkan, tambahkan ke favorit
+    if (!isFavorited) {
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, wisataId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menambah, ubah ikon menjadi berwarna
+            icon.classList.add("fa-solid");
+            icon.classList.remove("fa-regular");
+        })
+        .catch(error => {
+            console.error("Error adding to favorite:", error);
+        });
+    } else {
+        // Jika sudah difavoritkan, hapus dari favorit
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menghapus, ubah ikon menjadi abu-abu
+            icon.classList.add("fa-regular");
+            icon.classList.remove("fa-solid");
+
+            // Menghapus item favorit yang baru saja dihapus dari DOM
+            const favoriteItem = icon.closest('.item');
+            if (favoriteItem) {
+                favoriteItem.remove();  // Hapus elemen dari halaman
+            }
+
+            resetFavoriteList(); 
+        })
+        .catch(error => {
+            console.error("Error removing from favorite:", error);
+        });
+    }
+}
+
+// Fungsi untuk mengupdate daftar favorit yang ada
+function resetFavoriteList() {
+    const token = localStorage.getItem('token');
+    const userId = JSON.parse(atob(token.split('.')[1])).id;  // Mengambil user_id dari token
+    const favoriteList = document.getElementById('favorite-list');
+
+    // Menghapus semua elemen favorit yang ada
+    favoriteList.innerHTML = '';
+
+    // Ambil data favorit terbaru dari backend
+    fetch(`http://localhost:5000/api/favorite/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(favorites => {
+        if (favorites.length === 0) {
+            favoriteList.innerHTML = '<p>Tidak ada tempat favorit yang disimpan.</p>';
+        } else {
+            // Menampilkan data favorit ke halaman
+            favorites.forEach(fav => {
+                const favoriteItem = document.createElement('div');
+                favoriteItem.classList.add('col-lg-3', 'col-sm-6', 'mb-4', 'favorite-item');
+
+                favoriteItem.innerHTML = `
+                    <div class="item">
+                        <div class="thumb">
+                            <img src="http://localhost:5000/${fav.foto}" alt="${fav.nama_tempat}" class="img-fluid">
+                            <div class="hover-effect">
+                                <div class="content">
+                                    <div class="live">
+                                        <i class="favorite-icon fa-solid fa-heart" data-id="${fav.id}" onclick="toggleFavorite(this, ${userId})"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="down-content">
+                            <h4>${fav.nama_tempat}</h4>
+                            <p>${fav.kategori}</p>
+                            <p><strong>Rating:</strong> ${fav.rating} ⭐</p>
+                        </div>
+                    </div>
+                `;
+
+                favoriteList.appendChild(favoriteItem);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching favorite places:', error);
+    });
+}
+
     </script>
     
 
