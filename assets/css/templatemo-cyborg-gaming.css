@@ -1097,18 +1097,24 @@ Footer Style
 footer p {
   text-align: center;
   padding: 30px 0px;
-  color: #fff;
+  color: #666;
   font-weight: 300;
 }
 
 footer p a {
-  color: #fff;
+  color: #666;
   transition: all .3s;
 }
 
 footer p a:hover {
   color: #ec6090;
 }
+
+.blue-text {
+  color: #334eac; /* Warna biru yang sesuai dengan tema */
+  font-weight: bold; /* Opsional, jika ingin lebih menonjol */
+}
+
 
 /* 
 ---------------------------------------------
@@ -1960,12 +1966,11 @@ Profile Style
 }
 
 #logout-btn {
-  background-color: #334eac; /* Warna biru seperti tombol Login */
+  background-color: #d1001f;; /* Warna biru seperti tombol Login */
   color: white; /* Warna teks putih */
   border: none; /* Hapus border */
   width: 100%; /* Lebar penuh */
   padding: 6px; /* Padding agar lebih proporsional */
-  font-weight: bold; /* Teks lebih tegas */
   border-radius: 6px; /* Sudut membulat seperti tombol Login */
   text-align: center; /* Teks di tengah */
   cursor: pointer; /* Ubah kursor menjadi tangan saat hover */
