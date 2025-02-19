@@ -1780,7 +1780,31 @@ Top Streamers Style
   padding: 30px;
   max-height: 485px;
   min-height: 485px;
+  position: relative;
+  overflow: hidden; /* Agar border-radius bekerja dengan baik */
 }
+
+.top-streamers img {
+  width: 85%; /* Menyesuaikan dengan lebar div */
+  height: 160px; /* Menentukan tinggi gambar agar konsisten */
+  object-fit: cover; /* Memastikan gambar tetap proporsional */
+  border-radius: 10px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  object-fit: cover; /* Jaga agar gambar tidak terdistorsi */
+  border-radius: 10px;
+  display: block;
+  margin: 0 auto 10px; /* Beri jarak bawah agar tidak menempel dengan teks */
+  border-radius: 20px !important; /* Membulatkan sudut gambar */
+}
+
+
+.top-streamers p {
+  margin-top: 200px; 
+  text-align: justify;
+  font-size: 12px; /* Ukuran huruf lebih kecil */
+} 
 
 .top-streamers ul li {
   display: inline-block;
@@ -1832,6 +1856,7 @@ Top Streamers Style
 .top-streamers ul li .main-button a {
   padding: 8px 20px;
 }
+
 
 /* 
 ---------------------------------------------
