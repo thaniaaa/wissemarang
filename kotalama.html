@@ -243,7 +243,8 @@ https://templatemo.com/tm-579-cyborg-gaming
                             <div class="hover-effect">
                                 <div class="content">
                                     <div class="live">
-                                        <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this)"></i>
+                                        <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this, event)"></i>
+
                                     </div>
                                 </div>
                             </div>
@@ -270,6 +271,7 @@ https://templatemo.com/tm-579-cyborg-gaming
 
 // Fungsi untuk toggle favorit
 function toggleFavorite(icon) {
+  event.stopPropagation(); 
     const token = localStorage.getItem('token');  // Ambil token dari localStorage
     if (!token) {
         alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');

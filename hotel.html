@@ -204,6 +204,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             <p><strong>Rating:</strong> ${wisata.rating ? wisata.rating : 'Tidak ada rating'} ⭐</p>
                         `;
 
+                        // Menambahkan event listener untuk mengarahkan ke halaman detail
+                          item.addEventListener('click', function () {
+                              window.location.href = `detailWisata.html?id=${wisata.id}`;
+                          });
+
                         hotelCarousel.appendChild(item);
                     });
 
@@ -231,26 +236,50 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <div class="hover-effect">
                                         <div class="content">
                                             <div class="live">
-                                                <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this)"></i>
+                                                <i class="favorite-icon fa-regular fa-heart" data-id="${wisata.id}" onclick="toggleFavorite(this, event)"></i>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="down-content">
-                                    <h4>${wisata.nama_tempat}</h4>
-                                    <p>${wisata.deskripsi.substring(0, 100)}...</p>
-                                    <p><strong>Rating:</strong> ${wisata.rating} ⭐</p>
-                                </div>
+                               <div class="down-content">
+                                  <h4>${wisata.nama_tempat}</h4>
+                                  <p>${wisata.deskripsi.substring(0, 100)}...</p>
+                                  <!-- Menampilkan rata-rata rating dengan ID dinamis berdasarkan ID wisata -->
+                                  <div class="average-rating" id="average-rating-${wisata.id}">⭐</div>  
+                              </div>
                             </div>
                         `;
 
+                        // Menambahkan event listener untuk mengarahkan ke halaman detail
+                          wisataItem.addEventListener('click', function () {
+                              window.location.href = `detailWisata.html?id=${wisata.id}`;
+                          });
+
                         hotelList.appendChild(wisataItem);
+                         // Memanggil fungsi untuk menampilkan rata-rata rating untuk wisata ini
+                        loadAverageRating(wisata.id);
                     });
+                    
+                    // Fungsi untuk menampilkan rata-rata rating
+                  function loadAverageRating(wisataId) {
+                      fetch(`http://localhost:5000/api/rating/wisata/${wisataId}`)
+                          .then(response => response.json())
+                          .then(data => {
+                              const averageRating = data.averageRating || 0; // Ambil rata-rata rating
+                              //const totalRatings = data.totalRatings || 0; // Ambil jumlah rating
+                              const ratingElement = document.getElementById(`average-rating-${wisataId}`);
+                              ratingElement.innerHTML = `Rating: ${averageRating.toFixed(1)} ⭐`;
+                          })
+                          .catch(error => {
+                              console.error('Error fetching average rating:', error);
+                          });
+                  }
+
                 })
                 .catch(error => console.error("Gagal mengambil data wisata:", error));
         });
 
-        // Fungsi untuk toggle favorit
+// Fungsi untuk toggle favorit
 function toggleFavorite(icon) {
     const token = localStorage.getItem('token');  // Ambil token dari localStorage
     if (!token) {
