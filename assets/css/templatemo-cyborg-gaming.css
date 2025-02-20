@@ -1150,7 +1150,6 @@ login/register Style
 Featured Games Style
 --------------------------------------------- 
 */
-
 .featured-games .item {
   display: flex;
   flex-direction: column;
@@ -1396,7 +1395,6 @@ Featured Games Style
   font-size: 15px;
 }
 
-
 /* 
 ---------------------------------------------
 Start Stream Style
@@ -1432,7 +1430,6 @@ Start Stream Style
 Live Stream Style
 --------------------------------------------- 
 */
-
 .live-stream {
   margin-top: 60px;
   border-radius: 23px;
@@ -1593,7 +1590,6 @@ Live Stream Style
   text-align: center;
   margin-bottom: -53px;
 }
-
 /* 
 ---------------------------------------------
 Featured Banner Style

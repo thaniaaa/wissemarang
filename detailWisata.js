@@ -153,7 +153,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const totalRatings = data.totalRatings || 0; // Ambil jumlah rating
                 const ratingElement = document.getElementById('average-rating');
                 ratingElement.innerHTML = `
-                    <h5 style="color: black;">Rata-rata Rating: ${averageRating.toFixed(1)} ⭐ (${totalRatings} ratings)</h5>
+                    <h5 style="color: #666 ;">Rata-rata Rating : ${averageRating.toFixed(1)} ⭐ (${totalRatings} ratings)</h5>
 
                 `;
             })

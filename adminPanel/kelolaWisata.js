@@ -21,15 +21,9 @@ function loadWisataData() {
                     `<img src="http://localhost:5000/${item.foto}" width="80" onerror="this.onerror=null; this.src='http://localhost:5000/wisataImage/no-image.png';">`,
                     item.deskripsi ? item.deskripsi.substring(0, 50) + "..." : "Tidak ada deskripsi",
                     item.alamat || "Tidak ada alamat",
-<<<<<<< HEAD
-                    item.rating || "0",
+                    item.averageRating || "0",
                     `<button class="btn btn-sm custom-edit edit-btn" data-id="${item.id}">Edit</button> 
 <button class="btn btn-sm custom-delete delete-btn" data-id="${item.id}">Delete</button>`
-=======
-                    item.averageRating || "0",
-                    `<button class="btn btn-warning btn-sm edit-btn" data-id="${item.id}">Edit</button> 
-                    <button class="btn btn-danger btn-sm delete-btn" data-id="${item.id}">Delete</button>`
->>>>>>> yuli
 
                 ]).draw();
             });
