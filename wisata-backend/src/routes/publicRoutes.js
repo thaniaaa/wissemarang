@@ -92,9 +92,9 @@ router.post('/login', async (req, res) => {
         const user = results[0];
 
         // Jika user hanya punya Google ID, tidak boleh login dengan password
-        if (!user.password) {
-            return res.status(401).json({ error: 'Gunakan login Google untuk akun ini!' });
-        }
+        // if (!user.password) {
+        //     return res.status(401).json({ error: 'Gunakan login Google untuk akun ini!' });
+        // }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) return res.status(401).json({ error: 'Password salah' });
@@ -130,30 +130,24 @@ router.get('/profile', verifyToken, (req, res) => {
 });
 
 
-// 🔹 API Update Profil dengan Kompresi Gambar
 router.put('/profile', verifyToken, upload.single('profile_picture'), async (req, res) => {
     try {
         const userId = req.user.id;
         const { username } = req.body;
         let profilePicture = null;
 
+        // Jika ada file gambar yang di-upload
         if (req.file) {
             console.log('File uploaded:', req.file);
-            console.log('MIME type:', req.file.mimetype);
-            console.log('File size:', req.file.size);
-
             const imagePath = `uploads/${req.file.filename}`;
             const compressedPath = `uploads/compressed_${req.file.filename.replace(path.extname(req.file.filename), '.jpeg')}`;
-        
+
             try {
-                console.log('Processing image:', imagePath);  // Log untuk debugging
-        
                 await sharp(imagePath)
                     .resize(300, 300, { fit: 'cover' })
                     .jpeg({ quality: 80 })  // Kompresi JPEG
                     .toFile(compressedPath);
 
-                // Update profil dengan gambar baru
                 profilePicture = compressedPath;
 
                 // Menghapus gambar profil lama jika ada
@@ -166,20 +160,19 @@ router.put('/profile', verifyToken, upload.single('profile_picture'), async (req
 
                     const oldProfilePicture = result[0] ? result[0].profile_picture : null;
 
-                    // Hapus file lama jika ada
+                    // Hapus gambar lama jika ada
                     if (oldProfilePicture) {
                         const oldFilePath = `uploads/${oldProfilePicture}`;
                         try {
                             if (fs.existsSync(oldFilePath)) {
                                 await fsPromises.unlink(oldFilePath);  // Hapus gambar lama
-                                console.log('Old profile picture deleted');
                             }
                         } catch (error) {
                             console.error('Error deleting old profile picture:', error);
                         }
                     }
 
-                    // Update profil user dengan gambar yang sudah diproses
+                    // Update profil user (username dan gambar)
                     const updateProfileQuery = 'UPDATE users SET username = ?, profile_picture = ? WHERE id = ?';
                     db.query(updateProfileQuery, [username, profilePicture, userId], (err, result) => {
                         if (err) {
@@ -194,9 +187,22 @@ router.put('/profile', verifyToken, upload.single('profile_picture'), async (req
                     });
                 });
             } catch (error) {
-                console.error('Error processing image:', error);  // Menangani error kompresi
+                console.error('Error processing image:', error);
                 return res.status(500).json({ error: 'Gagal memproses gambar!' });
             }
+        } else {
+            // Jika tidak ada gambar yang di-upload, hanya update username
+            const updateProfileQuery = 'UPDATE users SET username = ? WHERE id = ?';
+            db.query(updateProfileQuery, [username, userId], (err, result) => {
+                if (err) {
+                    console.error('Error updating profile:', err);
+                    return res.status(500).json({ error: 'Database error' });
+                }
+
+                res.json({
+                    message: 'Profil berhasil diperbarui!',
+                });
+            });
         }
     } catch (error) {
         console.error(error);

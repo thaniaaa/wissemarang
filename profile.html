@@ -55,21 +55,13 @@ https://templatemo.com/tm-579-cyborg-gaming
                         <img src="assets/images/logo.png" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
-                    <!-- ***** Search End ***** -->
-                    <div class="search-input">
-                      <form id="search" action="#">
-                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
-                      </form>
-                    </div>
-                    <!-- ***** Search End ***** -->
                      <!-- ***** Menu Start ***** -->
                      <ul class="nav">
-                      <li><a href="index.html" >Home</a></li>
-                      <li><a href="index.html#kategori-wisata">Kategori</a></li>
-                        <li><a href="index.html#tempat-populer">Popular</a></li>
+                      <li><a href="index.html" class="active">Home</a></li>
+                      <li><a href="browse.html">Kategori</a></li>
+                      <li><a href="details.html">Popular</a></li>
                       <li><a href="favorite.html">Favorite</a></li> 
-                      <li><a href="#"class="active">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
+                      <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
                   </ul>   
                   <a class='menu-trigger'>
                       <span>Menu</span>
@@ -109,7 +101,7 @@ https://templatemo.com/tm-579-cyborg-gaming
 
                                   <div id="auth-buttons">
                                       <a href="login.html" class="btn btn-primary w-100 mb-2">Login</a>
-                                      <a href="register.html" class="btn-white">Register</a>
+                                      <a href="register.html" class="btn btn-outline-light w-100">Register</a>
                                   </div>
 
                                   <button id="logout-btn" class="btn btn-danger w-100 d-none">Logout</button>
@@ -127,10 +119,41 @@ https://templatemo.com/tm-579-cyborg-gaming
                           </div>
                       </div>
                       
-                      
                       <!-- Most Popular Clips - Hanya Muncul Jika Sudah Login -->
-                      
-                          
+                      <div class="row" id="clips-section" style="display: none;">
+                          <div class="col-lg-12">
+                              <!-- <div class="heading-section">
+                                  <h4><em>Your Most Popular</em> Clips</h4>
+                              </div> -->
+                          </div>
+                          <div class="col-lg-3 col-sm-6">
+                              <div class="item">
+                                  <!-- <div class="thumb">
+                                      <img src="assets/images/clip-01.jpg" alt="">
+                                  </div> -->
+                                  <!-- <div class="down-content">
+                                      <h4>First Clip</h4>
+                                      <span><i class="fa fa-eye"></i> 250</span>
+                                  </div> -->
+                              </div>
+                          </div>
+                          <div class="col-lg-3 col-sm-6">
+                              <div class="item">
+                                  <!-- <div class="thumb">
+                                      <img src="assets/images/clip-02.jpg" alt="">
+                                  </div> -->
+                                  <!-- <div class="down-content">
+                                      <h4>Second Clip</h4>
+                                      <span><i class="fa fa-eye"></i> 183</span>
+                                  </div> -->
+                              </div>
+                          </div>
+                      </div> 
+                  </div>
+              </div>
+          </div>
+          
+      </div>
             <!-- Modal Edit Profil -->
                 
         <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
@@ -168,10 +191,9 @@ https://templatemo.com/tm-579-cyborg-gaming
     <div class="container">
       <div class="row">
         <div class="col-lg-12">
-            <p>Pemerintah Kota Semarang ©2025. <a href="#"> All Rights Reserved. </a> Created by <span class="blue-text">Diskominfo Kota Semarang</span>.</p>
-
+          <p>Copyright © 2036 <a href="#">Cyborg Gaming</a> Company. All rights reserved. 
           
-          <!-- <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a></p> -->
+          <br>Design: <a href="https://templatemo.com" target="_blank" title="free CSS templates">TemplateMo</a></p>
         </div>
       </div>
     </div>
@@ -289,37 +311,62 @@ https://templatemo.com/tm-579-cyborg-gaming
             new bootstrap.Modal(document.getElementById("editProfileModal")).show();
         });
 
-        // Handle form submit untuk edit profil
-        editProfileForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
+ // Handle form submit untuk edit profil
+editProfileForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-            const username = document.getElementById("edit-username").value;
-            const profilePic = document.getElementById("edit-profile-pic").files[0];
+    const username = document.getElementById("edit-username").value;
+    const profilePic = document.getElementById("edit-profile-pic").files[0];
 
-            const formData = new FormData();
-            formData.append("username", username);
-            if (profilePic) formData.append("profile_picture", profilePic);
+    const formData = new FormData();
 
-            try {
-                const response = await fetch("http://localhost:5000/api/public/profile", {
-                    method: "PUT",
-                    headers: { "Authorization": `Bearer ${token}` },
-                    body: formData
-                });
+    // Kirimkan username hanya jika ada perubahan
+    if (username !== document.getElementById("username").textContent) {
+        formData.append("username", username);
+    }
 
-                if (!response.ok) {
-                    const errorText = await response.text(); 
-                    throw new Error(`Gagal memperbarui profil: ${response.status} - ${errorText}`);
-                }
+    // Kirimkan foto profil hanya jika ada perubahan gambar
+    if (profilePic) {
+        formData.append("profile_picture", profilePic);
+    }
 
-                const data = await response.json();
-                alert("Profil berhasil diperbarui!");
-                location.reload();
-            } catch (error) {
-                console.error("Gagal memperbarui profil:", error);
-                alert("Terjadi kesalahan saat memperbarui profil!");
-            }
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch("http://localhost:5000/api/public/profile", {
+            method: "PUT",
+            headers: { 
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
         });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Gagal memperbarui profil: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json();
+        alert("Profil berhasil diperbarui!");
+
+        // Tutup modal setelah berhasil menyimpan perubahan
+        const modalElement = document.getElementById("editProfileModal");
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+
+        // Tunggu sedikit sebelum reload agar pengguna melihat efek perubahan
+        setTimeout(() => {
+            location.reload();
+        }, 1000);  // Reload setelah 1 detik agar user melihat perubahan
+
+    } catch (error) {
+        console.error("Gagal memperbarui profil:", error);
+        alert("Terjadi kesalahan saat memperbarui profil!");
+    }
+});
+
     });
 
 </script>

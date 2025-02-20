@@ -54,42 +54,50 @@ router.post('/users', verifyAdmin, (req, res) => {
 
 // 🔹 API Update User by Admin
 router.put('/users/:id', verifyAdmin, (req, res) => {
-    const userId = req.params.id; // Get the user ID from the URL parameter
-    const { username, email, role, password } = req.body; // Get the updated user data from the body
+    const userId = req.params.id;  // Mendapatkan ID pengguna dari parameter URL
+    const { username, email, role, password } = req.body;  // Mendapatkan data user yang diubah dari body
     
-    // Validate input
+    // Validate input (Pastikan username, email, dan role ada)
     if (!username || !email || !role) {
         return res.status(400).json({ error: 'Semua kolom harus diisi!' });
     }
 
-    // If a password is provided, hash it
-    let updatedData = {
-        username,
-        email,
-        role,
-    };
+    // Ambil data user lama dari database
+    db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
+        if (err) return res.status(500).json({ error: 'Gagal mengambil data user' });
+        if (result.length === 0) return res.status(404).json({ error: 'User tidak ditemukan!' });
 
-    if (password) {
-        bcrypt.hash(password, 10, (err, hashedPassword) => {
-            if (err) return res.status(500).json({ error: 'Gagal mengenkripsi password' });
+        const existingUser = result[0];  // Mengambil data user lama
 
-            updatedData.password = hashedPassword; // Add the hashed password to the update object
+        // Siapkan data yang akan diperbarui
+        let updatedData = {
+            username,
+            email,
+            role,
+        };
 
-            // Proceed with the update query
-            updateUserInDatabase(userId, updatedData, res);
-        });
-    } else {
-        // If no password is provided, just update other fields
-        updateUserInDatabase(userId, updatedData, res);
-    }
+        // Jika password diubah, hash password baru
+        if (password) {
+            bcrypt.hash(password, 10, (err, hashedPassword) => {
+                if (err) return res.status(500).json({ error: 'Gagal mengenkripsi password' });
+
+                updatedData.password = hashedPassword;  // Tambahkan password yang telah di-hash ke data yang diperbarui
+                updateUserInDatabase(userId, updatedData, res);  // Lanjutkan update ke database
+            });
+        } else {
+            // Jika password tidak diubah, gunakan password lama
+            updatedData.password = existingUser.password;  // Pastikan password lama tetap dipertahankan
+            updateUserInDatabase(userId, updatedData, res);  // Lanjutkan update ke database
+        }
+    });
 });
 
-// Helper function to update the user in the database
+// Helper function untuk melakukan update data pengguna di database
 const updateUserInDatabase = (userId, updatedData, res) => {
     const query = 'UPDATE users SET username = ?, email = ?, role = ?, password = ? WHERE id = ?';
 
-    // Execute the update query
-    db.query(query, [updatedData.username, updatedData.email, updatedData.role, updatedData.password || null, userId], (err, result) => {
+    // Eksekusi query untuk memperbarui data pengguna
+    db.query(query, [updatedData.username, updatedData.email, updatedData.role, updatedData.password, userId], (err, result) => {
         if (err) {
             return res.status(500).json({ error: 'Database error' });
         }
@@ -98,7 +106,6 @@ const updateUserInDatabase = (userId, updatedData, res) => {
             return res.status(404).json({ error: 'User tidak ditemukan!' });
         }
 
-        // Successfully updated
         res.json({
             message: 'Pengguna berhasil diperbarui!',
         });
