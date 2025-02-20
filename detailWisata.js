@@ -167,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json())
         .then(wisataData => {
             displayWisataDetails(wisataData); // Menampilkan detail wisata
-            loadWisataGallery(wisataId); // Menampilkan gambar dari gallery
+            //loadWisataGallery(wisataId); // Menampilkan gambar dari gallery
             loadKomentar(wisataId); // Menampilkan komentar
             loadAverageRating(wisataId); // Menampilkan rata-rata rating
         })
@@ -180,44 +180,46 @@ document.addEventListener("DOMContentLoaded", function () {
         const wisataDetailContent = document.getElementById('wisata-detail-content');
         wisataDetailContent.innerHTML = `
             <div class="row">
-                <div class="col-lg-6">
-                    <div class="left-info">
-                        <div class="left">
+                <div class="col-lg-12">
+                    <div class="left-info text-center">
+                        
                             <h4>${wisata.nama_tempat}</h4>
                             <span>${wisata.alamat}</span>
-                        </div>
+                        
                     </div>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-12 text-center">
                     <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}" class="img-fluid" />
                 </div>
             </div>
+            <div class="deskripsi mt-3">
             <p>${wisata.deskripsi}</p>
+            </div>
         `;
     }
 
     // Mengambil gambar dari tabel wisata_gallery
-    function loadWisataGallery(wisataId) {
-        fetch(`http://localhost:5000/api/wisata/gallery/${wisataId}`)
-            .then(response => response.json())
-            .then(galleryData => {
-                const galleryContainer = document.createElement('div');
-                galleryContainer.classList.add('row');
+    // function loadWisataGallery(wisataId) {
+    //     fetch(`http://localhost:5000/api/wisata/gallery/${wisataId}`)
+    //         .then(response => response.json())
+    //         .then(galleryData => {
+    //             const galleryContainer = document.createElement('div');
+    //             galleryContainer.classList.add('row');
 
-                galleryData.forEach(galleryItem => {
-                    const imgElement = document.createElement('div');
-                    imgElement.classList.add('col-lg-4');
-                    imgElement.innerHTML = `<img src="http://localhost:5000/${galleryItem.foto}" alt="Gallery Image" class="img-fluid" />`;
-                    galleryContainer.appendChild(imgElement);
-                });
+    //             galleryData.forEach(galleryItem => {
+    //                 const imgElement = document.createElement('div');
+    //                 imgElement.classList.add('col-lg-4');
+    //                 imgElement.innerHTML = `<img src="http://localhost:5000/${galleryItem.foto}" alt="Gallery Image" class="img-fluid" />`;
+    //                 galleryContainer.appendChild(imgElement);
+    //             });
 
-                const wisataDetailContent = document.getElementById('wisata-detail-content');
-                wisataDetailContent.appendChild(galleryContainer);
-            })
-            .catch(error => {
-                console.error('Error fetching gallery images:', error);
-            });
-    }
+    //             const wisataDetailContent = document.getElementById('wisata-detail-content');
+    //             wisataDetailContent.appendChild(galleryContainer);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching gallery images:', error);
+    //         });
+    // }
 
     // Menampilkan komentar wisata
     function loadKomentar(wisataId) {
