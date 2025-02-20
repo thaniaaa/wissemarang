@@ -38,7 +38,7 @@ router.get('/:user_id', verifyToken, (req, res) => { // Gunakan verifyToken di s
     const user_id = req.user.id; // Ambil ID user dari middleware verifyToken
 
     const query = `
-        SELECT w.id, w.nama_tempat, w.kategori, w.foto, w.alamat, w.rating
+        SELECT w.id, w.nama_tempat, w.kategori, w.foto, w.alamat, w.averageRating
         FROM favorite_wisata fw
         JOIN wisata w ON fw.wisata_id = w.id
         WHERE fw.user_id = ?

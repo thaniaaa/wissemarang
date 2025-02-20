@@ -21,7 +21,7 @@ function loadWisataData() {
                     `<img src="http://localhost:5000/${item.foto}" width="80" onerror="this.onerror=null; this.src='http://localhost:5000/wisataImage/no-image.png';">`,
                     item.deskripsi ? item.deskripsi.substring(0, 50) + "..." : "Tidak ada deskripsi",
                     item.alamat || "Tidak ada alamat",
-                    item.rating || "0",
+                    item.averageRating || "0",
                     `<button class="btn btn-warning btn-sm edit-btn" data-id="${item.id}">Edit</button> 
                     <button class="btn btn-danger btn-sm delete-btn" data-id="${item.id}">Delete</button>`
 
@@ -41,7 +41,7 @@ document.getElementById("addForm").addEventListener("submit", function(event) {
     newWisataData.append("kategori", document.getElementById("add-kategori").value);
     newWisataData.append("deskripsi", document.getElementById("add-deskripsi").value);
     newWisataData.append("alamat", document.getElementById("add-alamat").value);
-    newWisataData.append("rating", parseFloat(document.getElementById("add-rating").value));
+    //newWisataData.append("rating", parseFloat(document.getElementById("add-rating").value));
 
     // Ambil foto dari input file
     const fotoFile = document.getElementById("add-foto").files[0];
@@ -69,27 +69,6 @@ document.getElementById("addForm").addEventListener("submit", function(event) {
         } else {
             alert("Data wisata berhasil ditambahkan!");
             $("#addModal").modal("hide"); // Tutup modal setelah data berhasil ditambahkan
-            //loadWisataData(); // Reload data tanpa refresh halaman
-
-            // // Buat elemen baru untuk data yang ditambahkan
-            // const newRow = `
-            //     <tr>
-            //         <td>${result.id}</td>
-            //         <td>${result.nama_tempat}</td>
-            //         <td>${result.kategori}</td>
-            //         <td>${result.deskripsi}</td>
-            //         <td>${result.alamat}</td>
-            //         <td>${result.rating}</td>
-            //         <td><img src="http://localhost:5000/${result.foto}" width="80" alt="Gambar"></td>
-            //         <td>
-            //             <button class="btn btn-warning btn-sm edit-btn" data-id="${result.id}">Edit</button>
-            //             <button class="btn btn-danger btn-sm delete-btn" data-id="${result.id}">Delete</button>
-            //         </td>
-            //     </tr>
-            // `;
-
-            // // Menambahkan baris baru di atas tabel
-            // $('#wisataTable').find('tbody').prepend(newRow); // prepend menambahkan baris di atas
         }
     })
     .catch(error => {
@@ -114,7 +93,7 @@ function editData(id) {
             document.getElementById("edit-kategori").value = data.kategori || "";
             document.getElementById("edit-deskripsi").value = data.deskripsi || "";
             document.getElementById("edit-alamat").value = data.alamat || "";
-            document.getElementById("edit-rating").value = data.rating || "0";
+            //document.getElementById("edit-rating").value = data.rating || "0";
             // document.getElementById("edit-foto-preview").src = data.foto 
             //     ? `http://localhost:5000/wisataImage/${data.foto}` // URL gambar wisata
             //     : "assets/images/no-image.png"; // Default image if none
@@ -134,7 +113,7 @@ document.getElementById("editWisataForm").addEventListener("submit", async funct
         kategori: document.getElementById("edit-kategori").value,
         deskripsi: document.getElementById("edit-deskripsi").value,
         alamat: document.getElementById("edit-alamat").value,
-        rating: parseFloat(document.getElementById("edit-rating").value),
+        //rating: parseFloat(document.getElementById("edit-rating").value),
     };
 
     const token = localStorage.getItem("token"); // Ambil token dari local storage
@@ -143,7 +122,7 @@ document.getElementById("editWisataForm").addEventListener("submit", async funct
     formData.append("kategori", updatedData.kategori);
     formData.append("deskripsi", updatedData.deskripsi);
     formData.append("alamat", updatedData.alamat);
-    formData.append("rating", updatedData.rating);
+    //formData.append("rating", updatedData.rating);
 
     const foto = document.getElementById("edit-foto").files[0];
     if (foto) {

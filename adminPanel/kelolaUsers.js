@@ -127,7 +127,7 @@ $(document).ready(function() {
 
     $(document).on('click', '.edit-btn', function() {
         const userId = $(this).data('id');
-    
+        
         // Ambil data user yang akan diedit berdasarkan ID
         fetch(`http://localhost:5000/api/public/users/${userId}`)
             .then(response => response.json())
@@ -146,49 +146,54 @@ $(document).ready(function() {
     });
     
     // Submit form edit user
-    $('#editUserForm').on('submit', function(e) {
-        e.preventDefault();
-    
-        const userId = $('#edit-user-id').val().trim();
-        const username = $('#edit-user-username').val().trim();
-        const email = $('#edit-user-email').val().trim();
-        const role = $('#edit-user-role').val().trim();
-        const password = $('#edit-user-password').val().trim();  // Ambil password baru jika ada
-    
-        const userData = { username, email, role, password };
-    
-        const token = localStorage.getItem("token");
-        if (!token) {
-            alert("Token tidak ditemukan! Silakan login ulang.");
-            return;
-        }
-    
-        // Kirim data ke API untuk mengedit data user
-        fetch(`http://localhost:5000/api/admin/users/${userId}`, {
-            method: 'PUT',
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}`, // Pastikan Authorization header ada
-            },
-            body: JSON.stringify(userData),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message) {
-                alert(data.message);
-                $('#editUserModal').modal('hide');  // Tutup modal
-                loadUserData();  // Perbarui tabel
-            } else {
-                alert(data.error || 'Gagal memperbarui data pengguna');
-            }
-        })
-        .catch(error => {
-            console.error("Error updating user:", error);
-            alert("Terjadi kesalahan. Coba lagi.");
-        });
-        
-    });
+// Submit form edit user
+$('#editUserForm').on('submit', function(e) {
+    e.preventDefault();
 
+    const userId = $('#edit-user-id').val().trim();
+    const username = $('#edit-user-username').val().trim();
+    const email = $('#edit-user-email').val().trim();
+    const role = $('#edit-user-role').val().trim();
+
+    // Menyiapkan data yang akan dikirim hanya yang perlu diubah (username, email, role)
+    const userData = { 
+        username,
+        email,
+        role
+    };
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+        alert("Token tidak ditemukan! Silakan login ulang.");
+        return;
+    }
+
+    // Kirim data ke API untuk mengedit data user
+    fetch(`http://localhost:5000/api/admin/users/${userId}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`, // Pastikan Authorization header ada
+        },
+        body: JSON.stringify(userData),  // Hanya mengirimkan data yang perlu diubah
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.message) {
+            alert(data.message);
+            $('#editUserModal').modal('hide');  // Tutup modal
+            loadUserData();  // Perbarui tabel
+        } else {
+            alert(data.error || 'Gagal memperbarui data pengguna');
+        }
+    })
+    .catch(error => {
+        console.error("Error updating user:", error);
+        alert("Terjadi kesalahan. Coba lagi.");
+    });
+});
+
+    
      //delete user
      $(document).on('click', '.delete-btn', function() {
         // Mendapatkan ID pengguna dari atribut data-id pada tombol

@@ -34,6 +34,43 @@ TemplateMo 579 Cyborg Gaming
 https://templatemo.com/tm-579-cyborg-gaming
 
 -->
+
+<style>
+  #searchResults {
+    margin-top: 20px;
+}
+
+.search-result-item {
+    display: flex;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+.search-result-content {
+    display: flex;
+    align-items: center;
+}
+
+.search-result-image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.search-result-text h4 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.search-result-text p {
+    font-size: 14px;
+    color: #555;
+}
+
+</style>
   </head>
 
 <body>
@@ -62,14 +99,21 @@ https://templatemo.com/tm-579-cyborg-gaming
                         <img src="assets/images/logo.png" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
-                    <!-- ***** Search End ***** -->
-                    <div class="search-input">
-                      <form id="search" action="#">
-                        <input type="text" placeholder="Cari" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
-                      </form>
-                    </div>
-                    <!-- ***** Search End ***** -->
+<!-- Search Bar -->
+<div class="search-input">
+  <form id="search" action="#">
+    <input type="text" placeholder="Cari" id="searchText" name="searchKeyword" oninput="handleSearch()" />
+    <i class="fa fa-search"></i>
+  </form>
+</div>
+
+<!-- Hasil Pencarian -->
+<div id="searchResults">
+  <!-- Hasil pencarian akan ditampilkan di sini -->
+</div>
+
+
+
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li><a href="index.html" class="active">Home</a></li>
@@ -268,6 +312,7 @@ https://templatemo.com/tm-579-cyborg-gaming
   <script src="assets/js/tabs.js"></script>
   <script src="assets/js/popup.js"></script>
   <script src="assets/js/custom.js"></script>
+  <script src="search.js"></script>
 
   <script>
     var swiper = new Swiper(".mySwiper", {
@@ -286,54 +331,55 @@ https://templatemo.com/tm-579-cyborg-gaming
       },
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-    fetch("http://localhost:5000/api/rating/top-rated")
-    .then(response => response.json())
-    .then(data => {
-        const topRatedCarousel = document.querySelector(".owl-features");
-        topRatedCarousel.innerHTML = "";
+// Fungsi untuk mengambil data wisata dengan rating tertinggi dan menampilkannya di Owl Carousel
+function loadTopRatedWisata() {
+    fetch("http://localhost:5000/api/wisata/top")  // Ganti dengan URL yang sesuai
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data dari API:", data);  // Debugging untuk melihat struktur data
 
-        // Tampilkan wisata dengan rating tertinggi
-        data.topRated.forEach(wisata => {
-            const item = document.createElement("div");
-            item.classList.add("item");
+            // Pastikan data adalah array
+            if (!Array.isArray(data)) {
+                console.error("Data yang diterima bukan array:", data);
+                return;
+            }
 
-            item.innerHTML = `
-                <div class="thumb">
-                    <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
-                </div>
-                <h4>${wisata.nama_tempat}<br>
-                <p><strong>Rating:</strong> ${wisata.averageRating.toFixed(1)} ⭐</p>
-            `;
+            // Pilih elemen carousel
+            let owlCarousel = document.querySelector('.owl-features');
+            owlCarousel.innerHTML = '';  // Clear carousel sebelum menambah data baru
 
-            topRatedCarousel.appendChild(item);
-        });
-
-        // Tampilkan wisata tanpa rating
-        if (data.noRating.length > 0) {
-            const noRatingSection = document.querySelector(".no-rating");
-            noRatingSection.innerHTML = "<h5>Wisata tanpa rating:</h5>";
-            
-            data.noRating.forEach(wisata => {
-                const item = document.createElement("div");
-                item.classList.add("item");
-
-                item.innerHTML = `
-                    <div class="thumb">
-                        <img src="http://localhost:5000/${wisata.foto}" alt="${wisata.nama_tempat}">
+            // Masukkan data wisata ke dalam owl-carousel
+            data.forEach(item => {
+                const wisataCard = `
+                    <div class="item">
+                        <div class="wisata-item">
+                            <img src="http://localhost:5000/${item.foto}" alt="${item.nama_tempat}" width="100%">
+                            <h5>${item.nama_tempat}</h5>
+                            <p>${item.kategori}</p>
+                            <p>Rating: ${item.averageRating}</p>
+                        </div>
                     </div>
-                    <h4>${wisata.nama_tempat}<br>
-                    <p><strong>Rating:</strong> Belum ada rating</p>
                 `;
-
-                noRatingSection.appendChild(item);
+                owlCarousel.innerHTML += wisataCard;
             });
-        }
-    })
-    .catch(error => {
-        console.error("Gagal mengambil data wisata:", error);
-    });
-});
+
+            // Setelah data ditambahkan, inisialisasi Owl Carousel
+            $('.owl-features').owlCarousel({
+                items: 8, 
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                dots: false,  
+                margin: 10,  
+                nav: true,  
+            });
+        })
+        .catch(error => console.error("Gagal memuat data top rated wisata:", error));
+}
+
+// Memanggil fungsi saat halaman dimuat
+document.addEventListener("DOMContentLoaded", loadTopRatedWisata);
+
 
 
   </script>

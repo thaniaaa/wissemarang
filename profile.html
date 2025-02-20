@@ -319,37 +319,62 @@ https://templatemo.com/tm-579-cyborg-gaming
             new bootstrap.Modal(document.getElementById("editProfileModal")).show();
         });
 
-        // Handle form submit untuk edit profil
-        editProfileForm.addEventListener("submit", async function (event) {
-            event.preventDefault();
+ // Handle form submit untuk edit profil
+editProfileForm.addEventListener("submit", async function (event) {
+    event.preventDefault();
 
-            const username = document.getElementById("edit-username").value;
-            const profilePic = document.getElementById("edit-profile-pic").files[0];
+    const username = document.getElementById("edit-username").value;
+    const profilePic = document.getElementById("edit-profile-pic").files[0];
 
-            const formData = new FormData();
-            formData.append("username", username);
-            if (profilePic) formData.append("profile_picture", profilePic);
+    const formData = new FormData();
 
-            try {
-                const response = await fetch("http://localhost:5000/api/public/profile", {
-                    method: "PUT",
-                    headers: { "Authorization": `Bearer ${token}` },
-                    body: formData
-                });
+    // Kirimkan username hanya jika ada perubahan
+    if (username !== document.getElementById("username").textContent) {
+        formData.append("username", username);
+    }
 
-                if (!response.ok) {
-                    const errorText = await response.text(); 
-                    throw new Error(`Gagal memperbarui profil: ${response.status} - ${errorText}`);
-                }
+    // Kirimkan foto profil hanya jika ada perubahan gambar
+    if (profilePic) {
+        formData.append("profile_picture", profilePic);
+    }
 
-                const data = await response.json();
-                alert("Profil berhasil diperbarui!");
-                location.reload();
-            } catch (error) {
-                console.error("Gagal memperbarui profil:", error);
-                alert("Terjadi kesalahan saat memperbarui profil!");
-            }
+    const token = localStorage.getItem("token");
+
+    try {
+        const response = await fetch("http://localhost:5000/api/public/profile", {
+            method: "PUT",
+            headers: { 
+                "Authorization": `Bearer ${token}`
+            },
+            body: formData
         });
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Gagal memperbarui profil: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json();
+        alert("Profil berhasil diperbarui!");
+
+        // Tutup modal setelah berhasil menyimpan perubahan
+        const modalElement = document.getElementById("editProfileModal");
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+            modalInstance.hide();
+        }
+
+        // Tunggu sedikit sebelum reload agar pengguna melihat efek perubahan
+        setTimeout(() => {
+            location.reload();
+        }, 1000);  // Reload setelah 1 detik agar user melihat perubahan
+
+    } catch (error) {
+        console.error("Gagal memperbarui profil:", error);
+        alert("Terjadi kesalahan saat memperbarui profil!");
+    }
+});
+
     });
 
 </script>

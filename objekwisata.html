@@ -141,9 +141,9 @@
       </div>
     </div>
   </div>
-  <div class="container mt-4">
+  <!-- <div class="container mt-4">
     <h2>Objek Wisata Populer</h2>
-    <div id="objek-wisata-list" class="row"></div>  <!-- Data objek wisata akan dimasukkan di sini -->
+    <div id="objek-wisata-list" class="row"></div>  Data objek wisata akan dimasukkan di sini -->
 </div>
 
   <footer>
@@ -182,8 +182,8 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Sorting berdasarkan rating tertinggi
-      data.sort((a, b) => b.rating - a.rating);
+      // // Sorting berdasarkan rating tertinggi
+      // data.sort((a, b) => b.rating - a.rating);
 
       // Menampilkan data wisata ke carousel
       const objekWisataCarousel = document.getElementById("objek-wisata-carousel");
@@ -244,6 +244,53 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch(error => console.error("Gagal mengambil data wisata:", error));
 });
+
+// Fungsi untuk mengambil data objek wisata dan menampilkannya di Owl Carousel
+function loadTopRatedWisata() {
+    fetch("http://localhost:5000/api/wisata/top/Objek%20Wisata")  // Ganti dengan endpoint untuk objek wisata
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data Top Rated Objek Wisata:", data);  // Debugging untuk melihat data yang diterima
+
+            if (!Array.isArray(data)) {
+                console.error("Data yang diterima bukan array:", data);
+                return;
+            }
+
+            // Pilih elemen carousel
+            let owlCarousel = document.querySelector('#objek-wisata-carousel');
+            owlCarousel.innerHTML = '';  // Clear carousel sebelum menambah data baru
+
+            // Masukkan data objek wisata ke dalam carousel
+            data.forEach(item => {
+                const wisataCard = `
+                    <div class="item">
+                        <img src="http://localhost:5000/${item.foto}" alt="${item.nama_tempat}">
+                        <h5>${item.nama_tempat}</h5>
+                        <p>Rating: ${item.averageRating}</p>
+                    </div>
+                `;
+                owlCarousel.innerHTML += wisataCard;
+            });
+
+            // Setelah data ditambahkan, inisialisasi Owl Carousel
+            $('#objek-wisata-carousel').owlCarousel({
+                items: 3,  // Menampilkan 3 item per halaman
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                margin: 20,  // Jarak antar item
+                nav: true,   // Tombol navigasi aktif
+                dots: false, // Nonaktifkan dots
+            });
+        })
+        .catch(error => console.error("Gagal memuat data top rated objek wisata:", error));
+}
+
+// Memanggil fungsi saat halaman dimuat
+document.addEventListener("DOMContentLoaded", loadTopRatedWisata);
+
 
 function renderWisata(wisataList, favoritePlaces) {
   const objekWisataList = document.getElementById("objek-wisata-list");
