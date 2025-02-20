@@ -996,6 +996,14 @@ Most Popular Style
   overflow: hidden;
 }
 
+.gaming-library .item .thumb img {
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 23px;
+}
+
+
 .gaming-library .item .thumb .hover-effect {
   position: absolute;
   bottom: -100px;
