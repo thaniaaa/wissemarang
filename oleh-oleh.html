@@ -69,21 +69,13 @@
                         <img src="assets/images/logo.png" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
-                    <!-- ***** Search End ***** -->
-                    <div class="search-input">
-                      <form id="search" action="#">
-                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
-                      </form>
-                    </div>
-                    <!-- ***** Search End ***** -->
                      <!-- ***** Menu Start ***** -->
                      <ul class="nav">
                         <li><a href="index.html" class="active">Home</a></li>
                         <li><a href="index.html#kategori-wisata">Kategori</a></li>
                         <li><a href="index.html#tempat-populer">Populer</a></li>
                         <li><a href="favorite.html">Favorite</a></li> 
-                        <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
+                        <li><a href="profile.html">Profile</a></li>
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -249,6 +241,53 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .catch(error => console.error("Gagal mengambil data wisata:", error));
         });
+
+// Fungsi untuk mengambil data objek wisata kategori Kota Lama dan menampilkannya di Owl Carousel
+function loadTopRatedKotaLama() {
+    fetch("http://localhost:5000/api/wisata/top/oleh%20oleh")  // Endpoint untuk mengambil data Kota Lama
+        .then(response => response.json())
+        .then(data => {
+            console.log("Data Top Rated Kota Lama:", data);  // Debugging untuk melihat data yang diterima
+
+            if (!Array.isArray(data)) {
+                console.error("Data yang diterima bukan array:", data);
+                return;
+            }
+
+            // Pilih elemen carousel
+            let owlCarousel = document.querySelector('#oleh-oleh-carousel');
+            owlCarousel.innerHTML = '';  // Clear carousel sebelum menambah data baru
+
+            // Masukkan data Kota Lama ke dalam carousel
+            data.forEach(item => {
+                const wisataCard = `
+                    <div class="item">
+                        <img src="http://localhost:5000/${item.foto}" alt="${item.nama_tempat}">
+                        <h5>${item.nama_tempat}</h5>
+                        <p>Rating: ${item.averageRating}</p>
+                    </div>
+                `;
+                owlCarousel.innerHTML += wisataCard;
+            });
+
+            // Setelah data ditambahkan, inisialisasi Owl Carousel
+            $('#oleh-oleh-carousel').owlCarousel({
+                items: 3,  // Menampilkan 3 item per halaman
+                loop: true,
+                autoplay: true,
+                autoplayTimeout: 3000,
+                autoplayHoverPause: true,
+                margin: 20,  // Jarak antar item
+                nav: true,   // Tombol navigasi aktif
+                dots: false, // Nonaktifkan dots
+            });
+        })
+        .catch(error => console.error("Gagal memuat data top rated Kota Lama:", error));
+}
+
+// Memanggil fungsi saat halaman dimuat
+document.addEventListener("DOMContentLoaded", loadTopRatedKotaLama);
+
 
         // Fungsi untuk toggle favorit
 function toggleFavorite(icon) {

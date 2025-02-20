@@ -35,7 +35,7 @@ const upload = multer({
 
 // 🟢 PUBLIK: Lihat semua wisata
 router.get('/', (req, res) => {
-    const query = 'SELECT id, nama_tempat, kategori, foto, deskripsi, alamat, rating FROM wisata';
+    const query = 'SELECT id, nama_tempat, kategori, foto, deskripsi, alamat, averageRating FROM wisata';
     db.query(query, (err, results) => {
         if (err) return res.status(500).json({ error: 'Database error' });
 
@@ -45,11 +45,37 @@ router.get('/', (req, res) => {
 });
 
 
+router.get('/top', (req, res) => {
+    const query = 'SELECT id, nama_tempat, kategori, foto, averageRating FROM wisata ORDER BY averageRating DESC Limit 8';
+    db.query(query, (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database error' });
+
+        console.log("Data yang dikirim ke frontend:", results); // Debugging
+        res.json(results);
+    });
+});
+
+router.get('/top/:kategori', (req, res) => {
+    const { kategori } = req.params;  // Ambil kategori dari URL
+
+    const query = 'SELECT id, nama_tempat, kategori, foto, averageRating FROM wisata WHERE kategori = ? ORDER BY averageRating DESC LIMIT 8';
+
+    db.query(query, [kategori], (err, results) => {
+        if (err) {
+            return res.status(500).json({ error: 'Database error' });
+        }
+
+        console.log("Data yang dikirim ke frontend:", results); // Debugging
+        res.json(results);  // Kirim hasil query dalam format JSON
+    });
+});
+
+
 // 🟢 API: Ambil daftar wisata berdasarkan kategori (misal: Hotel, Kota Lama)
 router.get('/kategori/:kategori', (req, res) => {
     const { kategori } = req.params;
     
-    const query = 'SELECT id, nama_tempat, deskripsi, foto, rating FROM wisata WHERE kategori = ?';
+    const query = 'SELECT id, nama_tempat, deskripsi, foto, averageRating FROM wisata WHERE kategori = ?';
 
     db.query(query, [kategori], (err, results) => {
         if (err) {
@@ -61,7 +87,6 @@ router.get('/kategori/:kategori', (req, res) => {
         res.json(results);
     });
 });
-
 
 
 // 🟢 PUBLIK: Lihat wisata berdasarkan ID
@@ -87,7 +112,7 @@ router.get('/:id', (req, res) => {  // ✅ Perbaiki endpoint
 
 // 🔹 API Tambah Wisata
 router.post('/', verifyAdmin, upload.single('foto'), async (req, res) => {
-    const { nama_tempat, kategori, deskripsi, alamat, rating } = req.body;
+    const { nama_tempat, kategori, deskripsi, alamat } = req.body;
     let fotoWisata = null;
 
     if (req.file) {
@@ -100,8 +125,8 @@ router.post('/', verifyAdmin, upload.single('foto'), async (req, res) => {
     }
 
     // Query untuk memasukkan data wisata baru ke database
-    const insertWisataQuery = 'INSERT INTO wisata (nama_tempat, kategori, deskripsi, foto, alamat, rating) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(insertWisataQuery, [nama_tempat, kategori, deskripsi, fotoWisata, alamat, rating], (err, result) => {
+    const insertWisataQuery = 'INSERT INTO wisata (nama_tempat, kategori, deskripsi, foto, alamat) VALUES (?, ?, ?, ?, ?)';
+    db.query(insertWisataQuery, [nama_tempat, kategori, deskripsi, fotoWisata, alamat], (err, result) => {
         if (err) {
             console.error('Error inserting wisata data:', err);
             return res.status(500).json({ error: 'Database error' });
@@ -118,7 +143,7 @@ router.post('/', verifyAdmin, upload.single('foto'), async (req, res) => {
 // 🔹 API Update Wisata Tanpa Kompresi Gambar
 router.put('/:id', verifyAdmin, upload.single('foto'), async (req, res) => {
     const { id } = req.params;
-    const { nama_tempat, kategori, deskripsi, alamat, rating } = req.body;
+    const { nama_tempat, kategori, deskripsi, alamat } = req.body;
     let fotoWisata = null;
 
     if (req.file) {
@@ -153,8 +178,8 @@ router.put('/:id', verifyAdmin, upload.single('foto'), async (req, res) => {
             }
 
             // Update wisata dengan gambar yang sudah diupload
-            const updateWisataQuery = 'UPDATE wisata SET nama_tempat = ?, kategori = ?, deskripsi = ?, foto = ?, alamat = ?, rating = ? WHERE id = ?';
-            db.query(updateWisataQuery, [nama_tempat, kategori, deskripsi, fotoWisata, alamat, rating, id], (err, result) => {
+            const updateWisataQuery = 'UPDATE wisata SET nama_tempat = ?, kategori = ?, deskripsi = ?, foto = ?, alamat = ? WHERE id = ?';
+            db.query(updateWisataQuery, [nama_tempat, kategori, deskripsi, fotoWisata, alamat, id], (err, result) => {
                 if (err) {
                     console.error('Error updating wisata:', err);
                     return res.status(500).json({ error: 'Database error' });
@@ -168,8 +193,8 @@ router.put('/:id', verifyAdmin, upload.single('foto'), async (req, res) => {
         });
     } else {
         // Jika tidak ada foto yang di-upload, update data wisata tanpa mengubah foto
-        const updateWisataQuery = 'UPDATE wisata SET nama_tempat = ?, kategori = ?, deskripsi = ?, alamat = ?, rating = ? WHERE id = ?';
-        db.query(updateWisataQuery, [nama_tempat, kategori, deskripsi, alamat, rating, id], (err, result) => {
+        const updateWisataQuery = 'UPDATE wisata SET nama_tempat = ?, kategori = ?, deskripsi = ?, alamat = ? WHERE id = ?';
+        db.query(updateWisataQuery, [nama_tempat, kategori, deskripsi, alamat, id], (err, result) => {
             if (err) {
                 console.error('Error updating wisata:', err);
                 return res.status(500).json({ error: 'Database error' });
@@ -237,9 +262,19 @@ router.get('/gallery/:wisataId', (req, res) => {
 });
 
 
-
-
-
+// Route untuk mendapatkan semua galeri gambar wisata
+router.get('/gallery', (req, res) => {
+    db.query('SELECT * FROM wisata_gallery', (err, results) => {
+        if (err) {
+            console.error("Error fetching gallery images:", err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'No images found for any wisata' });
+        }
+        res.json(results);  // Mengembalikan data dalam format JSON
+    });
+});
 
 
 module.exports = router;

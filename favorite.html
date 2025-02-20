@@ -73,21 +73,13 @@
                         <img src="assets/images/logo.png" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
-                    <!-- ***** Search End ***** -->
-                    <div class="search-input">
-                      <form id="search" action="#">
-                        <input type="text" placeholder="Type Something" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
-                      </form>
-                    </div>
-                    <!-- ***** Search End ***** -->
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li><a href="index.html">Home</a></li>
                         <li><a href="index.html#kategori-wisata">Kategori</a></li>
                         <li><a href="index.html#tempat-populer">Popular</a></li>
                         <li><a href="favorite.html" class="active">Favorite</a></li>
-                        <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
+                        <li><a href="profile.html">Profile</a></li>
                     </ul>   
                     <a class='menu-trigger'>
                         <span>Menu</span>
@@ -156,141 +148,214 @@
   <script src="assets/js/custom.js"></script>
 
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const token = localStorage.getItem('token');  // Ambil token dari localStorage
-    
-        const favoriteList = document.getElementById('favorite-list');
-        const notLoggedInMessage = document.getElementById('not-logged-in-message');  // Element to show the message
-    
-        if (!token) {
-            // Show message for users not logged in
-            notLoggedInMessage.innerHTML = '<p>Silakan login terlebih dahulu untuk melihat dan menambah tempat favorit.</p>';
-        } else {
-            const decodedToken = JSON.parse(atob(token.split('.')[1])); // Mendekode JWT
-            const userId = decodedToken.id;
-    
-            // Ambil data favorit dari backend
-            fetch(`http://localhost:5000/api/favorite/${userId}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => response.json())
-            .then(favorites => {
-                if (favorites.length === 0) {
-                    favoriteList.innerHTML = '<p>Tidak ada tempat favorit yang disimpan.</p>';
-                } else {
-                    // Menampilkan data favorit ke halaman
-                    favorites.forEach(fav => {
-                        const favoriteItem = document.createElement('div');
-                        favoriteItem.classList.add('col-lg-3', 'col-sm-6', 'mb-4');
-    
-                        favoriteItem.innerHTML = `
-                            <div class="item">
-                                <div class="thumb">
-                                    <img src="http://localhost:5000/${fav.foto}" alt="${fav.nama_tempat}" class="img-fluid">
-                                    <div class="hover-effect">
-                                        <div class="content">
-                                            <div class="live">
-                                                <i class="favorite-icon fa-solid fa-heart" data-id="${fav.id}" onclick="toggleFavorite(this, ${userId})"></i>
-                                            </div>
+document.addEventListener("DOMContentLoaded", function () {
+    const token = localStorage.getItem('token');  // Ambil token dari localStorage
+
+    const favoriteList = document.getElementById('favorite-list');
+    const notLoggedInMessage = document.getElementById('not-logged-in-message');  // Element to show the message
+
+    if (!token) {
+        // Show message for users not logged in
+        notLoggedInMessage.innerHTML = '<p>Silakan login terlebih dahulu untuk melihat dan menambah tempat favorit.</p>';
+    } else {
+        const decodedToken = JSON.parse(atob(token.split('.')[1])); // Mendekode JWT
+        const userId = decodedToken.id;
+
+        // Ambil data favorit dari backend
+        fetch(`http://localhost:5000/api/favorite/${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(favorites => {
+            if (favorites.length === 0) {
+                favoriteList.innerHTML = '<p>Tidak ada tempat favorit yang disimpan.</p>';
+            } else {
+                // Menampilkan data favorit ke halaman
+                favorites.forEach(fav => {
+                    const favoriteItem = document.createElement('div');
+                    favoriteItem.classList.add('col-lg-3', 'col-sm-6', 'mb-4');
+
+                    favoriteItem.innerHTML = `
+                        <div class="item">
+                            <div class="thumb">
+                                <img src="http://localhost:5000/${fav.foto}" alt="${fav.nama_tempat}" class="img-fluid wisata-image">
+                                <div class="hover-effect">
+                                    <div class="content">
+                                        <div class="live">
+                                            <i class="favorite-icon fa-solid fa-heart" data-id="${fav.id}" onclick="toggleFavorite(this, ${userId}, event)"></i>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="down-content">
-                                    <h4>${fav.nama_tempat}</h4>
-                                    <p>${fav.kategori}</p>
-                                    <p><strong>Rating:</strong> ${fav.rating} ⭐</p>
+                            </div>
+                            <div class="down-content">
+                                <h4 class="wisata-name">${fav.nama_tempat}</h4>
+                                <p>${fav.kategori}</p>
+                                <p><strong>Rating:</strong> ${fav.averageRating ? fav.averageRating : 'Tidak ada rating'} ⭐</p>
+                            </div>
+                        </div>
+                    `;
+
+                    // Cek apakah wisata ini sudah ada di daftar favorit
+                    const isFavorited = favorites.some(favItem => favItem.id === fav.id);
+
+                    // Jika sudah ada di favorit, ubah ikon menjadi terisi
+                    const icon = favoriteItem.querySelector('.favorite-icon');
+                    if (isFavorited) {
+                        icon.classList.add('fa-solid');
+                        icon.classList.remove('fa-regular');
+                    }
+
+                    // Add event listener for redirect to details page when clicking the image
+                    const wisataImage = favoriteItem.querySelector('.wisata-image');
+                    wisataImage.addEventListener('click', function (e) {
+                        window.location.href = `detailWisata.html?id=${fav.id}`;
+                    });
+
+                    // Add event listener for redirect to details page when clicking the name
+                    const wisataName = favoriteItem.querySelector('.wisata-name');
+                    wisataName.addEventListener('click', function (e) {
+                        window.location.href = `detailWisata.html?id=${fav.id}`;
+                    });
+
+                    favoriteList.appendChild(favoriteItem);
+                });
+
+                // Inisialisasi Owl Carousel untuk menampilkan tempat favorit
+                $(".owl-carousel").owlCarousel({
+                    items: 3,
+                    loop: true,
+                    autoplay: true,
+                    autoplayTimeout: 3000,
+                    dots: false
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching favorite places:', error);
+        });
+    }
+});
+
+// Fungsi untuk menambah atau menghapus dari favorit
+function toggleFavorite(icon, userId, event) {
+    event.stopPropagation();  // Prevent event bubbling to the parent (redirect)
+
+    const wisataId = icon.getAttribute('data-id');  // Ambil ID wisata
+    const token = localStorage.getItem('token');  // Ambil token dari localStorage
+
+    // Jika token tidak ada (pengguna belum login), tampilkan peringatan login
+    if (!token) {
+        alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');
+        return;  // Tidak melanjutkan jika belum login
+    }
+
+    const isFavorited = icon.classList.contains("fa-solid"); // Cek apakah sudah ada di favorit
+
+    // Jika belum difavoritkan, tambahkan ke favorit
+    if (!isFavorited) {
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ userId, wisataId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menambah, ubah ikon menjadi berwarna
+            icon.classList.add("fa-solid");
+            icon.classList.remove("fa-regular");
+        })
+        .catch(error => {
+            console.error("Error adding to favorite:", error);
+        });
+    } else {
+        // Jika sudah difavoritkan, hapus dari favorit
+        fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Setelah menghapus, ubah ikon menjadi abu-abu
+            icon.classList.add("fa-regular");
+            icon.classList.remove("fa-solid");
+
+            // Menghapus item favorit yang baru saja dihapus dari DOM
+            const favoriteItem = icon.closest('.item');
+            if (favoriteItem) {
+                favoriteItem.remove();  // Hapus elemen dari halaman
+            }
+
+            resetFavoriteList(); 
+        })
+        .catch(error => {
+            console.error("Error removing from favorite:", error);
+        });
+    }
+}
+
+// Fungsi untuk mengupdate daftar favorit yang ada
+function resetFavoriteList() {
+    const token = localStorage.getItem('token');
+    const userId = JSON.parse(atob(token.split('.')[1])).id;  // Mengambil user_id dari token
+    const favoriteList = document.getElementById('favorite-list');
+
+    // Menghapus semua elemen favorit yang ada
+    favoriteList.innerHTML = '';
+
+    // Ambil data favorit terbaru dari backend
+    fetch(`http://localhost:5000/api/favorite/${userId}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => response.json())
+    .then(favorites => {
+        if (favorites.length === 0) {
+            favoriteList.innerHTML = '<p>Tidak ada tempat favorit yang disimpan.</p>';
+        } else {
+            // Menampilkan data favorit ke halaman
+            favorites.forEach(fav => {
+                const favoriteItem = document.createElement('div');
+                favoriteItem.classList.add('col-lg-3', 'col-sm-6', 'mb-4', 'favorite-item');
+
+                favoriteItem.innerHTML = `
+                    <div class="item">
+                        <div class="thumb">
+                            <img src="http://localhost:5000/${fav.foto}" alt="${fav.nama_tempat}" class="img-fluid">
+                            <div class="hover-effect">
+                                <div class="content">
+                                    <div class="live">
+                                        <i class="favorite-icon fa-solid fa-heart" data-id="${fav.id}" onclick="toggleFavorite(this, ${userId}, event)"></i>
+                                    </div>
                                 </div>
                             </div>
-                        `;
-    
-                        // Cek apakah wisata ini sudah ada di daftar favorit
-                        const isFavorited = favorites.some(favItem => favItem.id === fav.id);
-    
-                        // Jika sudah ada di favorit, ubah ikon menjadi terisi
-                        const icon = favoriteItem.querySelector('.favorite-icon');
-                        if (isFavorited) {
-                            icon.classList.add('fa-solid');
-                            icon.classList.remove('fa-regular');
-                        }
-    
-                        favoriteList.appendChild(favoriteItem);
-                    });
-    
-                    // Inisialisasi Owl Carousel untuk menampilkan tempat favorit
-                    $(".owl-carousel").owlCarousel({
-                        items: 3,
-                        loop: true,
-                        autoplay: true,
-                        autoplayTimeout: 3000,
-                        dots: false
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error fetching favorite places:', error);
+                        </div>
+                        <div class="down-content">
+                            <h4>${fav.nama_tempat}</h4>
+                            <p>${fav.kategori}</p>
+                            <p><strong>Rating:</strong> ${fav.averageRating ? fav.averageRating : 'Tidak ada rating'} ⭐</p>
+                        </div>
+                    </div>
+                `;
+
+                favoriteList.appendChild(favoriteItem);
             });
         }
+    })
+    .catch(error => {
+        console.error('Error fetching favorite places:', error);
     });
-    
-    // Fungsi untuk menambah atau menghapus dari favorit
-    function toggleFavorite(icon, userId) {
-        const wisataId = icon.getAttribute('data-id');  // Ambil ID wisata
-        const token = localStorage.getItem('token');  // Ambil token dari localStorage
-    
-        if (!token) {
-            alert('Silakan login terlebih dahulu untuk menambahkan ke favorit!');
-            return;
-        }
-    
-        const isFavorited = icon.classList.contains("fa-solid"); // Cek apakah sudah ada di favorit
-    
-        // Jika belum difavoritkan, tambahkan ke favorit
-        if (!isFavorited) {
-            fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                },
-                body: JSON.stringify({ userId, wisataId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Setelah menambah, ubah ikon menjadi berwarna
-                icon.classList.add("fa-solid");
-                icon.classList.remove("fa-regular");
-            })
-            .catch(error => {
-                console.error("Error adding to favorite:", error);
-            });
-        } else {
-            // Jika sudah difavoritkan, hapus dari favorit
-            fetch(`http://localhost:5000/api/favorite/${userId}/${wisataId}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Setelah menghapus, ubah ikon menjadi abu-abu
-                icon.classList.add("fa-regular");
-                icon.classList.remove("fa-solid");
-    
-                // Menghapus item favorit yang baru saja dihapus dari DOM
-                const favoriteItem = icon.closest('.item');
-                if (favoriteItem) {
-                    favoriteItem.remove();  // Hapus elemen dari halaman
-                }
-            })
-            .catch(error => {
-                console.error("Error removing from favorite:", error);
-            });
-        }
-    }
+}
+
     </script>
     
 

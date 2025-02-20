@@ -63,22 +63,24 @@ https://templatemo.com/tm-579-cyborg-gaming
                         <img src="assets/images/logo.png" alt="">
                     </a>
                     <!-- ***** Logo End ***** -->
-                    <!-- ***** Search End ***** -->
-                    <div class="search-input">
-                      <form id="search" action="#">
-                        <input type="text" placeholder="Cari" id='searchText' name="searchKeyword" onkeypress="handle" />
-                        <i class="fa fa-search"></i>
-                      </form>
-                    </div>
-                    <!-- ***** Search End ***** -->
+
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
+<<<<<<< HEAD
                       <li><a href="index.html" class="active">Home</a></li>
                       <li><a href="#kategori-wisata">Kategori</a></li>
                       <li><a href="#tempat-populer">Populer</a></li>
                       <li><a href="favorite.html">Favorite</a></li> 
                       <li><a href="profile.html">Profile <img src="assets/images/profile-header.jpg" alt=""></a></li>
                     </ul>
+=======
+                        <li><a href="index.html" class="active">Home</a></li>
+                        <li><a href="browse.html">Kategori</a></li>
+                        <li><a href="details.html">Populer</a></li>
+                        <li><a href="favorite.html">Favorite</a></li> 
+                        <li><a href="profile.html">Profile</li>
+                    </ul>   
+>>>>>>> yuli
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
@@ -157,6 +159,7 @@ https://templatemo.com/tm-579-cyborg-gaming
 <!-- ***** Banner End ***** -->
 
 
+<<<<<<< HEAD
 <div id="kategori-wisata" class="most-popular">
   <div class="heading-section">
     <h4><em>Kategori</em> Wisata</h4>
@@ -207,13 +210,86 @@ https://templatemo.com/tm-579-cyborg-gaming
   </div>
 </div>
 
+=======
+          <!-- ***** Most Popular Start ***** -->
+          <div class="most-popular">
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="heading-section">
+                  <h4><em>Kategori</em> Wisata</h4>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <a href="hotel.html">
+                      <img src="assets/images/popular-01.jpg" alt="">
+                      <h4>Hotel<br><span> Istirahat nyaman dengan fasilitas terbaik.</span></h4>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <a href="kuliner.html">
+                      <img src="assets/images/popular-02.jpg" alt="">
+                      <h4>Kuliner<br><span>Sajian khas Semarang yang wajib dicoba.
+                      </span></h4>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <a href="oleh-oleh.html">
+                      <img src="assets/images/popular-03.jpg" alt="">
+                      <h4>Oleh-oleh<br><span>Buah tangan khas untuk dibawa pulang.</span></h4>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <a href="spa.html">
+                      <img src="assets/images/popular-04.jpg" alt="">
+                      <h4>SPA<br><span>Relaksasi dan perawatan tubuh terbaik.</span></h4>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <a href="kotalama.html">
+                      <img src="assets/images/popular-07.jpg" alt="">
+                      <h4>Kota Lama<br><span>Keindahan sejarah dalam nuansa klasik.</span></h4>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <a href="objekwisata.html">
+                      <img src="assets/images/popular-07.jpg" alt="">
+                      <h4>Objek Wisata<br><span>Destinasi menarik untuk dieksplorasi.</span></h4>
+                    </a>
+                    </div>
+                  </div>
+                  <div class="col-lg-3 col-sm-6">
+                    <div class="item">
+                      <a href="tempatnongkrog.html">
+                      <img src="assets/images/popular-07.jpg" alt="">
+                      <h4>Tempat Nongkrong<br><span>Spot asyik untuk santai dan kumpul.</span></h4>
+                      </a>
+                    </div>
+                  </div>
+
+
+                </div>
+              </div>
+            </div>
+          </div> 
+>>>>>>> yuli
           <!-- ***** Most Popular End ***** -->
 
           <!-- ***** Gaming Library Start ***** -->
           <div id="tempat-populer" class="gaming-library">
             <div class="col-lg-12">
               <div class="heading-section">
-                <h4><em>Tempat Populer</em> Di Kota Semarang</h4>
+                <h4><em>Top Rated Wisata</em> Di Kota Semarang</h4>
               </div>
               <div class="owl-features owl-carousel">
                 <div class="item">
@@ -361,45 +437,59 @@ https://templatemo.com/tm-579-cyborg-gaming
       },
     });
 
-    document.addEventListener("DOMContentLoaded", function() {
-    fetch('http://localhost:5000/api/wisata/top-wisata')
+// Fungsi untuk mengambil data wisata dengan rating tertinggi dan menampilkannya di Owl Carousel
+function loadTopRatedWisata() {
+    fetch("http://localhost:5000/api/wisata/top")  // Ganti dengan URL yang sesuai
         .then(response => response.json())
         .then(data => {
-            const popularWisataContainer = document.getElementById('popular-wisata');
-            
-            // Menghapus semua elemen yang ada sebelumnya
-            popularWisataContainer.innerHTML = '';
-            
-            // Loop untuk menambahkan data wisata ke carousel
+            console.log("Data dari API:", data);  // Debugging untuk melihat struktur data
+
+            // Pastikan data adalah array
+            if (!Array.isArray(data)) {
+                console.error("Data yang diterima bukan array:", data);
+                return;
+            }
+
+            // Pilih elemen carousel
+            let owlCarousel = document.querySelector('.owl-features');
+            owlCarousel.innerHTML = '';  // Clear carousel sebelum menambah data baru
+
+            // Masukkan data wisata ke dalam owl-carousel
             data.forEach(item => {
-                const wisataItem = `
+                const wisataCard = `
                     <div class="item">
-                        <div class="thumb">
-                            <a href="details.html?id=${item.id}">
-                                <img src="http://localhost:5000/${item.foto}" alt="${item.nama_tempat}">
-                            </a>
+                        <div class="wisata-item">
+                            <img src="http://localhost:5000/${item.foto}" alt="${item.nama_tempat}" width="100%">
+                            <h5>${item.nama_tempat}</h5>
+                            <p>${item.kategori}</p>
+                            <p>Rating: ${item.averageRating}</p>
                         </div>
-                        <h4>${item.nama_tempat}<br><span>${item.rating}⭐</span></h4>
                     </div>
                 `;
-                popularWisataContainer.innerHTML += wisataItem;
+                owlCarousel.innerHTML += wisataCard;
             });
 
-            // Menyegarkan owl-carousel setelah data dimuat
-            $('.owl-carousel').owlCarousel('destroy'); // Reset Owl Carousel
-            $('.owl-carousel').owlCarousel({ // Menginisialisasi ulang owl-carousel
-                items: 3,
+            // Setelah data ditambahkan, inisialisasi Owl Carousel
+            $('.owl-features').owlCarousel({
+                items: 8, 
                 loop: true,
-                margin: 10,
-                nav: true,
-                dots: true
+                autoplay: true,
+                autoplayTimeout: 3000,
+                dots: false,  
+                margin: 10,  
+                nav: true,  
             });
         })
-        .catch(error => console.error('Error fetching popular wisata:', error));
-});
+        .catch(error => console.error("Gagal memuat data top rated wisata:", error));
+}
+
+// Memanggil fungsi saat halaman dimuat
+document.addEventListener("DOMContentLoaded", loadTopRatedWisata);
+
 
 
   </script>
+<<<<<<< HEAD
 
 <script>
   document.querySelectorAll('.nav a[href^="#"]').forEach(anchor => {
@@ -509,6 +599,8 @@ footer {
 </style>
 
 
+=======
+>>>>>>> yuli
 
   </body>
 
