@@ -1,56 +1,58 @@
-// Fungsi untuk menangani pencarian
-function handleSearch() {
-    const searchText = document.getElementById('searchText').value.toLowerCase();  // Ambil input pencarian dan ubah menjadi huruf kecil
-
-    if (searchText.length > 0) {
-        loadDataAndSearch(searchText);
-    } else {
-        document.getElementById('searchResults').innerHTML = ''; // Kosongkan hasil jika input kosong
-    }
-}
-
-// Ambil data dari API dan tampilkan di halaman
-function loadDataAndSearch(searchText) {
-    fetch('http://localhost:5000/api/wisata')  // Ganti dengan endpoint API yang sesuai
-    .then(response => response.json())
-    .then(data => {
-        // Filter data berdasarkan nama, kategori, atau alamat yang mengandung kata kunci
-        const filteredData = data.filter(item => {
-            return item.name.toLowerCase().includes(searchText) ||
-                   item.category.toLowerCase().includes(searchText) ||
-                   item.address.toLowerCase().includes(searchText); // Menambahkan kategori dan alamat
-        });
-        displaySearchResults(filteredData); // Tampilkan hasil pencarian
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error); // Menangani jika terjadi kesalahan saat mengambil data
-    });
-}
-
-// Fungsi untuk menampilkan hasil pencarian
-function displaySearchResults(results) {
-    const resultsContainer = document.getElementById('searchResults');
-    resultsContainer.innerHTML = '';  // Bersihkan hasil pencarian sebelumnya
-
-    if (results.length === 0) {
-        resultsContainer.innerHTML = '<p>Tidak ada hasil ditemukan</p>';
-    } else {
-        results.forEach(result => {
-            const resultDiv = document.createElement('div');
-            resultDiv.classList.add('search-result-item');
-            
-            // Gambar, Nama, Kategori, dan Alamat
-            resultDiv.innerHTML = `
-                <div class="search-result-content">
-                    <img src="${result.imageUrl}" alt="${result.name}" class="search-result-image" />
-                    <div class="search-result-text">
-                        <h4>${result.name}</h4>
-                        <p>${result.category}</p>
-                        <p>${result.address}</p>
-                    </div>
+document.addEventListener("DOMContentLoaded", function () {
+    const token = localStorage.getItem('token');
+    
+    // Ambil data dari API atau data yang sudah ada
+    fetch("http://localhost:5000/api/wisata/kategori/Hotel")
+      .then(response => response.json())
+      .then(data => {
+        const hotelList = document.getElementById("hotel-list");
+  
+        // Fungsi untuk memfilter hasil berdasarkan input pencarian
+        function filterHotels(searchText) {
+          const filteredData = data.filter(hotel => {
+            return hotel.nama_tempat.toLowerCase().includes(searchText) || 
+                   hotel.kategori.toLowerCase().includes(searchText) || 
+                   hotel.alamat.toLowerCase().includes(searchText);
+          });
+          renderHotels(filteredData);
+        }
+  
+        // Render hotel berdasarkan data
+        function renderHotels(hotels) {
+          hotelList.innerHTML = ''; // Clear previous data
+          hotels.forEach(hotel => {
+            const hotelItem = document.createElement("div");
+            hotelItem.classList.add("col-lg-4", "col-sm-6", "mb-4");
+  
+            hotelItem.innerHTML = `
+              <div class="item">
+                <div class="thumb">
+                  <img src="http://localhost:5000/${hotel.foto}" alt="${hotel.nama_tempat}">
                 </div>
+                <div class="down-content">
+                  <h4>${hotel.nama_tempat}</h4>
+                  <p>${hotel.alamat}</p>
+                  <p>Category: ${hotel.kategori}</p>
+                  <button class="btn btn-warning">Edit</button>
+                  <button class="btn btn-danger">Delete</button>
+                </div>
+              </div>
             `;
-            resultsContainer.appendChild(resultDiv);
+            hotelList.appendChild(hotelItem);
+          });
+        }
+  
+        // Panggil filter saat mengetik di kolom pencarian
+        document.getElementById("searchText").addEventListener("input", function () {
+          const searchText = this.value.toLowerCase();
+          filterHotels(searchText);
         });
-    }
-}
+  
+        // Render initial data
+        renderHotels(data);
+      })
+      .catch(error => {
+        console.error("Error fetching data:", error);
+      });
+  });
+  
